@@ -42,7 +42,7 @@ export default function ChatInput({
   const placeholderMessages = [
     "Ask GikaGraph...",
     "For Example: It is too hot here",
-    "For Example: What would you like to know?",
+    "For Example: I am going for a brunch with my fiance today",
   ];
 
   // Typing animation effect for placeholder

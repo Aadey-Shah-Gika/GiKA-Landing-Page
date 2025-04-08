@@ -43,10 +43,11 @@ export default function ChatThread({ messages }: ChatThreadProps) {
 
   // Function to format text with preserved newlines
   const formatText = (text: string) => {
+    const len = text.split("\n").length;
     return text.split("\n").map((line, i) => (
       <span key={i}>
         {line}
-        {i < text.split("\n").length - 1 && <br />}
+        {i < len && <br />}
       </span>
     ));
   };
@@ -135,7 +136,7 @@ export default function ChatThread({ messages }: ChatThreadProps) {
                 className={cn(
                   "p-4 rounded-2xl break-words",
                   message.role === "user"
-                    ? "bg-gray-100 bg-opacity-40 dark:bg-gray-50 dark:bg-opacity-20 max-w-[75%] text-gray-800 dark:text-gray-200 whitespace-pre-wrap" // Added whitespace-pre-wrap
+                    ? "bg-gray-100 bg-opacity-40 dark:bg-gray-50 dark:bg-opacity-20 max-w-xl text-gray-800 dark:text-gray-200 whitespace-pre-wrap" // Added whitespace-pre-wrap
                     : "bg-transparent"
                 )}
               >

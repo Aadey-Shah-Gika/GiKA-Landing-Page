@@ -103,6 +103,10 @@
   background-color: #6b7280; /* Dark mode hover state */
 }
 
+html {
+  background-color: rgb(17, 24, 39);
+}
+
 /* 
   Custom scrollbar class - apply this to specific components if you don't want 
   to affect all scrollbars globally 
