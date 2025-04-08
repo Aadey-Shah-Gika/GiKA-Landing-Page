@@ -1,6 +1,51 @@
-import { create } from 'zustand';
-import { generateId } from './utils';
-import { Message } from './types';
+import { create } from "zustand";
+import { generateId } from "./utils";
+import { Message } from "./types";
+
+const competitorAnalysis = `
+# Analyzing Competitor Products
+
+Understanding competitor products is critical for staying competitive in any market. This process involves systematically evaluating the strengths, weaknesses, features, and market performance of rival offerings. Below is a structured approach to performing a comprehensive competitor product analysis.
+
+## 1. Identify Key Competitors
+- List direct and indirect competitors.
+- Focus on those offering similar products or targeting the same customer segments.
+
+## 2. Gather Product Information
+- Visit competitor websites and online marketplaces.
+- Use product demos, reviews, manuals, and customer feedback.
+- Tools like SimilarWeb, SEMrush, and Ahrefs can help gather data on traffic, SEO, and marketing strategies.
+
+## 3. Analyze Product Features
+- Create a comparison table for feature-by-feature analysis.
+- Note any unique selling points (USPs) or missing features.
+- Evaluate design, user experience (UX), performance, and technology stack.
+
+## 4. Study Pricing and Packaging
+- Compare pricing models (subscription, one-time purchase, freemium, etc.).
+- Look at product bundles, discount strategies, and upselling techniques.
+
+## 5. Examine Customer Perception
+- Analyze customer reviews and ratings.
+- Monitor social media and forums for sentiment analysis.
+- Identify common complaints and praise points.
+
+## 6. Evaluate Marketing and Positioning
+- Assess branding, messaging, and target audience.
+- Study content marketing, advertising channels, and influencer collaborations.
+
+## 7. Assess Market Performance
+- Look at market share, revenue estimates, and growth trends.
+- Identify partnerships and distribution channels.
+
+## 8. Identify Opportunities and Threats
+- Pinpoint gaps in the market.
+- Discover areas where your product can outperform competitors.
+- Note potential risks or challenges posed by competitors.
+
+## Conclusion
+Competitor product analysis should be an ongoing process. The insights gained can guide product development, marketing strategies, and business growth. Staying informed about competitor moves ensures you’re always ready to innovate and adapt.
+`;
 
 interface ChatState {
   messages: Message[];
@@ -16,7 +61,7 @@ export const useChat = create<ChatState>((set, get) => ({
   sendMessage: async (content: string) => {
     const userMessage: Message = {
       id: generateId(),
-      role: 'user',
+      role: "user",
       content: content,
       timestamp: new Date(),
     };
@@ -33,34 +78,33 @@ export const useChat = create<ChatState>((set, get) => ({
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Demo response based on the query
-      let responseContent = '';
+      let responseContent = "";
 
       if (
-        content.toLowerCase().includes('vegan') ||
-        content.toLowerCase().includes('skincare')
+        content.toLowerCase().includes("vegan") ||
+        content.toLowerCase().includes("skincare")
       ) {
         responseContent =
           "I found 5 vegan skincare products in Mumbai under $10 with 4+ star ratings. The most popular is Aaranya Natural's Aloe Gel with 124 reviews and 4.7 stars.";
       } else if (
-        content.toLowerCase().includes('finance') ||
-        content.toLowerCase().includes('stock')
+        content.toLowerCase().includes("finance") ||
+        content.toLowerCase().includes("stock")
       ) {
         responseContent =
-          'Based on the latest FDA announcements, 3 pharmaceutical stocks may be impacted by the recent approval delays: AstraZeneca (AZN), Novartis (NVS), and Bristol Myers Squibb (BMY).';
+          "Based on the latest FDA announcements, 3 pharmaceutical stocks may be impacted by the recent approval delays: AstraZeneca (AZN), Novartis (NVS), and Bristol Myers Squibb (BMY).";
       } else if (
-        content.toLowerCase().includes('healthcare') ||
-        content.toLowerCase().includes('medical')
+        content.toLowerCase().includes("healthcare") ||
+        content.toLowerCase().includes("medical")
       ) {
         responseContent =
           "Analyzing the patient's symptoms against our medical knowledge graph shows a 92% correlation with Erythromelalgia, a rare vascular peripheral pain disorder that's often misdiagnosed.";
       } else {
-        responseContent =
-          "I've analyzed your query using our entity intelligence platform. Is there a specific industry or domain you're interested in exploring further?";
+        responseContent = competitorAnalysis;
       }
 
       const assistantMessage: Message = {
         id: generateId(),
-        role: 'assistant',
+        role: "assistant",
         content: responseContent,
         timestamp: new Date(),
       };
@@ -71,12 +115,12 @@ export const useChat = create<ChatState>((set, get) => ({
         isLoading: false,
       }));
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
 
       // Add error message
       const errorMessage: Message = {
         id: generateId(),
-        role: 'assistant',
+        role: "assistant",
         content:
           "I'm sorry, I encountered an error processing your request. Please try again.",
         timestamp: new Date(),
