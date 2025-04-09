@@ -1,4 +1,4 @@
-import { User, Copy, Check, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Copy, Check, ThumbsUp, ThumbsDown } from "lucide-react";
 import { Message } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { MDXRemote } from "next-mdx-remote";

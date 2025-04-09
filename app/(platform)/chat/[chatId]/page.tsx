@@ -1,15 +1,14 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { useChat, useActiveChat } from "@/lib/chat-store";
-import { useSidebar } from "../layout"; // Import from layout
+import { useChat } from "@/lib/chat-store";
+import { useSidebar } from "../../layout"; // Import from layout
 import ChatSidebar from "@/components/platform/chat/ChatSidebar";
 import ChatThread from "@/components/platform/chat/ChatThread";
 import ChatInput from "@/components/platform/chat/ChatInput";
 import ContextPanel from "@/components/platform/panels/ContextPanel";
 import SidebarOverlay from "@/components/platform/chat/SidebarOverlay";
-import { X, PanelRightOpen, Network } from "lucide-react";
+import { X, PanelRightOpen } from "lucide-react";
 
 // Configuration for panel resize
 const MIN_PANEL_WIDTH = 300; // Minimum width for the context panel
@@ -17,13 +16,15 @@ const MAX_PANEL_WIDTH = 600; // Maximum width for the context panel
 const DEFAULT_PANEL_WIDTH = 400; // Default width
 const SIDEBAR_WIDTH = 256; // Width of sidebar in pixels (w-64 = 16rem = 256px)
 
-export default function ChatPage() {
-  const router = useRouter();
-  const params = useParams();
-  const chatId = params?.chatId as string | undefined;
+interface ChatPageProps {
+  params: {
+    chatId: string;
+  };
+}
 
-  const { activeChat, setActiveChat, getChatById, hasChats } = useChat();
-  const { messages, sendMessage, isLoading } = useActiveChat();
+export default function ChatIdPage({ params }: ChatPageProps) {
+  const { chatId } = params;
+  const { getChatById, setActiveChat } = useChat();
 
   // Use the sidebar context from layout
   const { isSidebarOpen, toggleSidebar } = useSidebar();
@@ -39,41 +40,26 @@ export default function ChatPage() {
   const splitterRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Set active chat if chatId is provided
+  // Load the chat when the component mounts or chatId changes
   useEffect(() => {
-    if (chatId) {
-      const chat = getChatById(chatId);
-      if (chat) {
-        setActiveChat(chatId);
-      } else if (hasChats()) {
-        // If invalid chatId, redirect to first chat
-        const firstChat = useChat.getState().chats[0];
-        router.replace(`/chat/${firstChat.id}`);
-      } else {
-        // If no chats at all, go to empty state
-        router.replace("/chat");
-      }
-    } else {
-      // No chatId - empty state
-      setActiveChat(null);
-    }
-  }, [chatId, getChatById, setActiveChat, router, hasChats]);
+    // Verify that the chat exists
+    const chat = getChatById(chatId);
 
-  // Update URL when active chat changes
-  useEffect(() => {
-    if (activeChat) {
-      // Don't replace if we're already on this URL
-      if (chatId !== activeChat) {
-        router.replace(`/chat/${activeChat}`);
-      }
-    } else if (chatId) {
-      // If activeChat is null but we have a chatId in the URL, go to empty state
-      router.replace("/chat");
+    if (chat) {
+      // If chat exists, set it as active
+      setActiveChat(chatId);
     }
-  }, [activeChat, router, chatId]);
+    // If chat doesn't exist, we'll let the root layout handle the redirect
+  }, [chatId, getChatById, setActiveChat]);
+
+  // Get current chat messages
+  const currentChat = getChatById(chatId);
+  const messages = currentChat?.messages || [];
+  const isLoading = useChat((state) => state.isLoading);
 
   const handleSendMessage = async () => {
     if (inputValue.trim() === "") return;
+    const { sendMessage } = useChat.getState();
     await sendMessage(inputValue);
     setInputValue("");
   };
@@ -176,9 +162,6 @@ export default function ChatPage() {
     };
   }, [isResizing, handleResize, stopResize]);
 
-  // Check if we're in empty state (no active chat)
-  const isEmptyState = !activeChat;
-
   return (
     <div className="flex h-screen bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 overflow-hidden">
       {/* Sidebar Overlay - for mobile */}
@@ -220,6 +203,7 @@ export default function ChatPage() {
               </button>
             )}
           </div>
+
           <h1 className="text-lg font-semibold">
             Chat Page - GiKA Graph Assistant
           </h1>
@@ -236,31 +220,10 @@ export default function ChatPage() {
           </div>
         </div>
 
-        {/* Empty State or Chat Messages */}
-        {isEmptyState && messages.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center p-6">
-            <div className="max-w-md text-center">
-              <h2 className="text-2xl font-bold mb-4 text-emerald-600 dark:text-emerald-400">
-                Shape Your Own Legacy
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-8">
-                {hasChats()
-                  ? "Start a new conversation to explore ideas and information."
-                  : "Begin your first conversation to create history."}
-              </p>
-              <div className="w-24 h-24 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center mx-auto mb-6">
-                <Network className="w-12 h-12 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Type your message below to begin
-              </p>
-            </div>
-          </div>
-        ) : (
-          <ChatThread messages={messages} />
-        )}
+        {/* Chat Messages */}
+        <ChatThread messages={messages} />
 
-        {/* Input Area - Always visible */}
+        {/* Input Area */}
         <ChatInput
           value={inputValue}
           onChange={setInputValue}

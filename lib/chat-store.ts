@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { generateId } from "./utils";
 import { Message } from "./types";
+import { persist } from "zustand/middleware";
 
 const competitorAnalysis = [
   `
@@ -45,7 +46,7 @@ Understanding competitor products is critical for staying competitive in any mar
 - Note potential risks or challenges posed by competitors.
 
 ## Conclusion
-Competitor product analysis should be an ongoing process. The insights gained can guide product development, marketing strategies, and business growth. Staying informed about competitor moves ensures you’re always ready to innovate and adapt.
+Competitor product analysis should be an ongoing process. The insights gained can guide product development, marketing strategies, and business growth. Staying informed about competitor moves ensures you're always ready to innovate and adapt.
 `,
   `
 # Market Segmentation
@@ -92,96 +93,431 @@ Launching a product requires a plan that includes target audience, marketing cha
 `,
 ];
 
-interface ChatState {
+export type Chat = {
+  id: string;
+  title: string;
   messages: Message[];
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+interface ChatState {
+  chats: Chat[];
+  activeChat: string | null;
   isLoading: boolean;
+  tempMessage: string | null; // To store first message temporarily
+
+  createNewChat: (initialMessage: string) => string;
+  setActiveChat: (chatId: string | null) => void;
+  getChatById: (chatId: string) => Chat | null;
+  deleteChat: (chatIdToDelete: string) => string | null;
   sendMessage: (content: string) => Promise<void>;
   clearMessages: () => void;
+  hasChats: () => boolean;
+  getEmptyState: () => void;
 }
 
-export const useChat = create<ChatState>((set, get) => ({
-  messages: [],
-  isLoading: false,
+export const useChat = create<ChatState>()(
+  persist(
+    (set, get) => ({
+      chats: [],
+      activeChat: null,
+      isLoading: false,
+      tempMessage: null, // Temporary message before chat creation
 
-  sendMessage: async (content: string) => {
-    const userMessage: Message = {
-      id: generateId(),
-      role: "user",
-      content: content,
-      timestamp: new Date(),
-    };
+      createNewChat: (initialMessage) => {
+        const newChatId = generateId();
+        const now = new Date();
 
-    // Add user message immediately
-    set((state) => ({
-      messages: [...state.messages, userMessage],
-      isLoading: true,
-    }));
+        // Create a new chat with the initial message
+        const userMessage: Message = {
+          id: generateId(),
+          role: "user",
+          content: initialMessage,
+          timestamp: now,
+        };
 
-    try {
-      // In a real app, you would call your API here
-      // For demo purposes, we'll simulate a delay and response
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+        // Create a new chat and add it to state
+        set((state) => ({
+          chats: [
+            {
+              id: newChatId,
+              title: initialMessage.split(" ").slice(0, 3).join(" ") + "...",
+              messages: [userMessage],
+              createdAt: now,
+              updatedAt: now,
+            },
+            ...state.chats,
+          ],
+          activeChat: newChatId,
+          tempMessage: null, // Clear temp message
+        }));
 
-      // Demo response based on the query
-      let responseContent = "";
+        return newChatId;
+      },
 
-      if (
-        content.toLowerCase().includes("vegan") ||
-        content.toLowerCase().includes("skincare")
-      ) {
-        responseContent =
-          "I found 5 vegan skincare products in Mumbai under $10 with 4+ star ratings. The most popular is Aaranya Natural's Aloe Gel with 124 reviews and 4.7 stars.";
-      } else if (
-        content.toLowerCase().includes("finance") ||
-        content.toLowerCase().includes("stock")
-      ) {
-        responseContent =
-          "Based on the latest FDA announcements, 3 pharmaceutical stocks may be impacted by the recent approval delays: AstraZeneca (AZN), Novartis (NVS), and Bristol Myers Squibb (BMY).";
-      } else if (
-        content.toLowerCase().includes("healthcare") ||
-        content.toLowerCase().includes("medical")
-      ) {
-        responseContent =
-          "Analyzing the patient's symptoms against our medical knowledge graph shows a 92% correlation with Erythromelalgia, a rare vascular peripheral pain disorder that's often misdiagnosed.";
-      } else {
-        responseContent =
-          competitorAnalysis[
-            Math.floor(Math.random() * competitorAnalysis.length)
-          ];
-      }
+      setActiveChat: (chatId) => {
+        set({
+          activeChat: chatId,
+          tempMessage: null, // Clear temp message when switching chats
+        });
+      },
 
-      const assistantMessage: Message = {
-        id: generateId(),
-        role: "assistant",
-        content: responseContent,
-        timestamp: new Date(),
-      };
+      // Get chat by ID
+      getChatById: (chatId: string) => {
+        const { chats } = get();
+        return chats.find((chat) => chat.id === chatId) || null;
+      },
 
-      // Add assistant response
-      set((state) => ({
-        messages: [...state.messages, assistantMessage],
-        isLoading: false,
-      }));
-    } catch (error) {
-      console.error("Error sending message:", error);
+      // Delete a chat
+      deleteChat: (chatIdToDelete: string) => {
+        const { chats, activeChat } = get();
 
-      // Add error message
-      const errorMessage: Message = {
-        id: generateId(),
-        role: "assistant",
-        content:
-          "I'm sorry, I encountered an error processing your request. Please try again.",
-        timestamp: new Date(),
-      };
+        // Filter out the chat to delete
+        const updatedChats = chats.filter((chat) => chat.id !== chatIdToDelete);
 
-      set((state) => ({
-        messages: [...state.messages, errorMessage],
-        isLoading: false,
-      }));
+        // If we're deleting the active chat, set a new active chat or null
+        let newActiveChat = activeChat;
+        if (activeChat === chatIdToDelete) {
+          // We deleted the active chat, go to empty state
+          newActiveChat = null;
+        }
+
+        set({
+          chats: updatedChats,
+          activeChat: newActiveChat,
+        });
+
+        return newActiveChat;
+      },
+
+      sendMessage: async (content: string) => {
+        if (!content.trim()) return;
+
+        const { activeChat, chats } = get();
+
+        if (!activeChat) {
+          // We're in the empty state (/chat), store the message temporarily
+          set({
+            tempMessage: content,
+            isLoading: true,
+          });
+
+          try {
+            // In a real app, you would call your API here
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+
+            // Now create a new chat with this message
+            const newChatId = get().createNewChat(content);
+
+            // Generate a response based on the query
+            let responseContent = "";
+
+            if (
+              content.toLowerCase().includes("vegan") ||
+              content.toLowerCase().includes("skincare")
+            ) {
+              responseContent =
+                "I found 5 vegan skincare products in Mumbai under $10 with 4+ star ratings. The most popular is Aaranya Natural's Aloe Gel with 124 reviews and 4.7 stars.";
+            } else if (
+              content.toLowerCase().includes("finance") ||
+              content.toLowerCase().includes("stock")
+            ) {
+              responseContent =
+                "Based on the latest FDA announcements, 3 pharmaceutical stocks may be impacted by the recent approval delays: AstraZeneca (AZN), Novartis (NVS), and Bristol Myers Squibb (BMY).";
+            } else if (
+              content.toLowerCase().includes("healthcare") ||
+              content.toLowerCase().includes("medical")
+            ) {
+              responseContent =
+                "Analyzing the patient's symptoms against our medical knowledge graph shows a 92% correlation with Erythromelalgia, a rare vascular peripheral pain disorder that's often misdiagnosed.";
+            } else {
+              responseContent =
+                competitorAnalysis[
+                  Math.floor(Math.random() * competitorAnalysis.length)
+                ];
+            }
+
+            const assistantMessage: Message = {
+              id: generateId(),
+              role: "assistant",
+              content: responseContent,
+              timestamp: new Date(),
+            };
+
+            // Add the assistant response to the new chat
+            set((state) => {
+              const updatedChats = state.chats.map((chat) => {
+                if (chat.id === newChatId) {
+                  return {
+                    ...chat,
+                    messages: [...chat.messages, assistantMessage],
+                    updatedAt: new Date(),
+                  };
+                }
+                return chat;
+              });
+
+              return {
+                chats: updatedChats,
+                isLoading: false,
+              };
+            });
+
+            return;
+          } catch (error) {
+            console.error("Error sending message:", error);
+
+            // Create the chat anyway but with an error
+            const newChatId = get().createNewChat(content);
+
+            const errorMessage: Message = {
+              id: generateId(),
+              role: "assistant",
+              content:
+                "I'm sorry, I encountered an error processing your request. Please try again.",
+              timestamp: new Date(),
+            };
+
+            set((state) => {
+              const updatedChats = state.chats.map((chat) => {
+                if (chat.id === newChatId) {
+                  return {
+                    ...chat,
+                    messages: [...chat.messages, errorMessage],
+                    updatedAt: new Date(),
+                  };
+                }
+                return chat;
+              });
+
+              return {
+                chats: updatedChats,
+                isLoading: false,
+              };
+            });
+
+            return;
+          }
+        }
+
+        // We have an active chat, add message to it
+        const userMessage: Message = {
+          id: generateId(),
+          role: "user",
+          content: content,
+          timestamp: new Date(),
+        };
+
+        // Add user message to the active chat
+        set((state) => {
+          const updatedChats = state.chats.map((chat) => {
+            if (chat.id === state.activeChat) {
+              return {
+                ...chat,
+                messages: [...chat.messages, userMessage],
+                updatedAt: new Date(),
+              };
+            }
+            return chat;
+          });
+
+          return {
+            chats: updatedChats,
+            isLoading: true,
+          };
+        });
+
+        try {
+          // In a real app, you would call your API here
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+
+          // Generate response based on the query
+          let responseContent = "";
+
+          if (
+            content.toLowerCase().includes("vegan") ||
+            content.toLowerCase().includes("skincare")
+          ) {
+            responseContent =
+              "I found 5 vegan skincare products in Mumbai under $10 with 4+ star ratings. The most popular is Aaranya Natural's Aloe Gel with 124 reviews and 4.7 stars.";
+          } else if (
+            content.toLowerCase().includes("finance") ||
+            content.toLowerCase().includes("stock")
+          ) {
+            responseContent =
+              "Based on the latest FDA announcements, 3 pharmaceutical stocks may be impacted by the recent approval delays: AstraZeneca (AZN), Novartis (NVS), and Bristol Myers Squibb (BMY).";
+          } else if (
+            content.toLowerCase().includes("healthcare") ||
+            content.toLowerCase().includes("medical")
+          ) {
+            responseContent =
+              "Analyzing the patient's symptoms against our medical knowledge graph shows a 92% correlation with Erythromelalgia, a rare vascular peripheral pain disorder that's often misdiagnosed.";
+          } else {
+            responseContent =
+              competitorAnalysis[
+                Math.floor(Math.random() * competitorAnalysis.length)
+              ];
+          }
+
+          const assistantMessage: Message = {
+            id: generateId(),
+            role: "assistant",
+            content: responseContent,
+            timestamp: new Date(),
+          };
+
+          // Add assistant response to the active chat
+          set((state) => {
+            const updatedChats = state.chats.map((chat) => {
+              if (chat.id === state.activeChat) {
+                return {
+                  ...chat,
+                  messages: [...chat.messages, assistantMessage],
+                  updatedAt: new Date(),
+                };
+              }
+              return chat;
+            });
+
+            return {
+              chats: updatedChats,
+              isLoading: false,
+            };
+          });
+        } catch (error) {
+          console.error("Error sending message:", error);
+
+          // Add error message to the active chat
+          const errorMessage: Message = {
+            id: generateId(),
+            role: "assistant",
+            content:
+              "I'm sorry, I encountered an error processing your request. Please try again.",
+            timestamp: new Date(),
+          };
+
+          set((state) => {
+            const updatedChats = state.chats.map((chat) => {
+              if (chat.id === state.activeChat) {
+                return {
+                  ...chat,
+                  messages: [...chat.messages, errorMessage],
+                  updatedAt: new Date(),
+                };
+              }
+              return chat;
+            });
+
+            return {
+              chats: updatedChats,
+              isLoading: false,
+            };
+          });
+        }
+      },
+
+      clearMessages: () => {
+        const { activeChat } = get();
+
+        if (activeChat) {
+          // If we're in a chat, delete it and go to empty state
+          get().deleteChat(activeChat);
+        } else {
+          // If we're in empty state, just clear temp message
+          set({ tempMessage: null });
+        }
+      },
+
+      hasChats: () => {
+        return get().chats.length > 0;
+      },
+
+      getEmptyState: () => {
+        set({
+          activeChat: null,
+          tempMessage: null,
+        });
+      },
+    }),
+    {
+      name: "chats-storage", // name of the item in the storage
+      partialize: (state) => ({
+        chats: state.chats.map((chat) => ({
+          ...chat,
+          // Convert Date objects to ISO strings for storage
+          createdAt:
+            chat.createdAt instanceof Date
+              ? chat.createdAt.toISOString()
+              : chat.createdAt,
+          updatedAt:
+            chat.updatedAt instanceof Date
+              ? chat.updatedAt.toISOString()
+              : chat.updatedAt,
+          messages: chat.messages.map((msg) => ({
+            ...msg,
+            timestamp:
+              msg.timestamp instanceof Date
+                ? msg.timestamp.toISOString()
+                : msg.timestamp,
+          })),
+        })),
+        activeChat: state.activeChat,
+      }),
+      // Parse dates when hydrating from storage
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          // Convert ISO strings back to Date objects
+          state.chats = state.chats.map((chat) => ({
+            ...chat,
+            createdAt: new Date(chat.createdAt),
+            updatedAt: new Date(chat.updatedAt),
+            messages: chat.messages.map((msg) => ({
+              ...msg,
+              timestamp: new Date(msg.timestamp),
+            })),
+          }));
+        }
+      },
     }
-  },
+  )
+);
 
-  clearMessages: () => {
-    set({ messages: [] });
-  },
-}));
+// Helper function to get messages for the active chat
+export const useActiveChat = () => {
+  const {
+    chats,
+    activeChat,
+    isLoading,
+    sendMessage,
+    clearMessages,
+    tempMessage,
+  } = useChat();
+
+  const activeChatData = chats.find((chat) => chat.id === activeChat);
+
+  // If we have an active chat, use its messages
+  // If we're in empty state but have a temp message, create a temporary message array
+  // Otherwise return empty array
+  const messages =
+    activeChatData?.messages ||
+    (tempMessage
+      ? [
+          {
+            id: "temp",
+            role: "user",
+            content: tempMessage,
+            timestamp: new Date(),
+          },
+        ]
+      : []);
+
+  return {
+    messages,
+    sendMessage,
+    clearMessages,
+    isLoading,
+    chatTitle: activeChatData?.title || "New Chat",
+    isEmptyState: !activeChat,
+  };
+};

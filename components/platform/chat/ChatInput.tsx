@@ -264,6 +264,7 @@ export default function ChatInput({
           type="file"
           ref={fileInputRef}
           onChange={handleFileChange}
+          title="Upload a file"
           className="hidden"
         />
 
