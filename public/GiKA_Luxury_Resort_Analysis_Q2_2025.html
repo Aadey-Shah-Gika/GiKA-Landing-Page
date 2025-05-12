@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Beach Resort Competitive Analysis Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-light: #EDE9FE;
+            --secondary: #6366F1;
+            --secondary-light: #E0E7FF;
+            --accent: #10B981;
+            --accent-light: #D1FAE5;
+            --dark: #1F2937;
+            --gray: #6B7280;
+            --light-gray: #E5E7EB;
+            --white: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #F9FAFB;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .print-button:hover {
+            background-color: #7c3aed;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .header-text h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .header-meta {
+            text-align: right;
+            font-size: 14px;
+        }
+
+        /* TOC Styles */
+        .toc {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .toc h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toc h2::before {
+            content: '';
+            display: block;
+            width: 4px;
+            height: 18px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        .toc-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .toc-item {
+            background-color: var(--primary-light);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--primary);
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .toc-item:hover {
+            background-color: #ddd6fc;
+        }
+
+        /* Section Styles */
+        section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        section h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        section h2 .section-icon {
+            background-color: var(--primary-light);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        section h3 {
+            font-size: 18px;
+            margin: 20px 0 15px;
+            color: var(--dark);
+        }
+
+        /* Executive Summary */
+        .executive-summary {
+            border-left: 4px solid var(--primary);
+            padding-left: 20px;
+            margin-bottom: 25px;
+        }
+
+        .key-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .metric-card {
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .metric-card.competitor {
+            background-color: var(--secondary-light);
+        }
+
+        .metric-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+
+        .metric-card.competitor .metric-value {
+            color: var(--secondary);
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+
+        .metric-context {
+            font-size: 12px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        /* Chart containers */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+
+        .chart-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 25px 0;
+        }
+
+        .chart-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            height: 250px;
+            /* Fixed height for pie chart containers */
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 15px;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        /* Insights box */
+        .insight-box {
+            background-color: var(--accent-light);
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .insight-box h4 {
+            color: var(--accent);
+            margin-bottom: 5px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .insight-box p {
+            font-size: 14px;
+            color: var(--dark);
+        }
+
+        /* Recommendations */
+        .recommendations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .recommendation-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--primary);
+        }
+
+        .recommendation-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .recommendation-desc {
+            font-size: 14px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .impact-meter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .impact-label {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .impact-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .impact-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+        }
+
+        .impact-dot.active {
+            background-color: var(--primary);
+        }
+
+        /* Timeline */
+        .timeline {
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 15px;
+            width: 4px;
+            background-color: var(--primary-light);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 45px;
+            margin-bottom: 25px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 7px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            border: 4px solid var(--primary-light);
+        }
+
+        .timeline-date {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            background-color: var(--primary-light);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .timeline-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .timeline-text {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .timeline-text ul {
+            padding-left: 20px;
+            margin: 8px 0;
+        }
+
+        /* Progress bars */
+        .progress-container {
+            margin: 8px 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-value {
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .progress-value.our {
+            background-color: var(--primary);
+        }
+
+        .progress-value.competitor {
+            background-color: var(--secondary);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            font-size: 14px;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            opacity: 0.8;
+        }
+
+        .footer-right {
+            text-align: right;
+        }
+
+        /* Print styles */
+        @media print {
+            .print-button {
+                display: none;
+            }
+
+            body {
+                background-color: white;
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 0 10px;
+            }
+
+            header,
+            section,
+            footer {
+                box-shadow: none;
+                margin-bottom: 20px;
+            }
+
+            section {
+                page-break-inside: avoid;
+            }
+
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+
+            .key-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .recommendations {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .header-meta {
+                text-align: center;
+            }
+
+            .logo-area {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-area">
+                    <div class="logo">GI</div>
+                    <div class="header-text">
+                        <h1>Luxury Beach Resort Competitive Analysis</h1>
+                        <p>Strategic Insights and Recommendations</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <p>Report Date: May 9, 2025</p>
+                    <p>Peak Season Analysis: Dec - Feb</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="toc">
+            <h2>Report Contents</h2>
+            <div class="toc-list">
+                <a href="#executive-summary" class="toc-item">Executive Summary</a>
+                <a href="#pricing-analysis" class="toc-item">Pricing Analysis</a>
+                <a href="#occupancy-analysis" class="toc-item">Occupancy Analysis</a>
+                <a href="#amenities-analysis" class="toc-item">Amenities Analysis</a>
+                <a href="#strategic-recommendations" class="toc-item">Strategic Recommendations</a>
+                <a href="#implementation-roadmap" class="toc-item">Implementation Roadmap</a>
+            </div>
+        </div>
+
+        <section id="executive-summary">
+            <h2>
+                <span class="section-icon">📊</span>
+                Executive Summary
+            </h2>
+
+            <div class="executive-summary">
+                <p>Our comprehensive competitive analysis of luxury beach resorts reveals that our average nightly rate
+                    during peak season (Dec-Feb) is $432, which is 12% higher than the median of our top 5 competitors.
+                    While Competitor A has successfully increased prices by 18% year-over-year while maintaining 87%
+                    occupancy, our projected occupancy is only 72%, indicating potential price sensitivity in our target
+                    market. Furthermore, competitors have bundled amenities in 60% of their listings, compared to only
+                    25% of our offerings, which contributes to their higher conversion rates.</p>
+            </div>
+
+            <div class="key-metrics">
+                <div class="metric-card">
+                    <div class="metric-label">Our Average Nightly Rate</div>
+                    <div class="metric-value">$432</div>
+                    <div class="metric-context">12% above median competitor price</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Our Projected Occupancy</div>
+                    <div class="metric-value">72%</div>
+                    <div class="metric-context">15% below top competitor</div>
+                </div>
+
+                <div class="metric-card competitor">
+                    <div class="metric-label">Competitor A Occupancy</div>
+                    <div class="metric-value">87%</div>
+                    <div class="metric-context">With 18% YoY price increase</div>
+                </div>
+
+                <div class="metric-card competitor">
+                    <div class="metric-label">Competitor Bundled Amenities</div>
+                    <div class="metric-value">60%</div>
+                    <div class="metric-context">vs. our 25% offering rate</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    Key Insight
+                </h4>
+                <p>Analysis suggests we can maintain premium pricing if we enhance our value proposition through
+                    strategic bundling of amenities and targeted marketing of our unique experiences. This would help
+                    justify our higher rates while improving occupancy.</p>
+            </div>
+        </section>
+
+        <section id="pricing-analysis">
+            <h2>
+                <span class="section-icon">$</span>
+                Pricing Analysis
+            </h2>
+
+            <p>Our pricing analysis reveals that our average nightly rate during peak season positions us at a premium
+                compared to most competitors, with only Competitor B charging higher rates.</p>
+
+            <div class="chart-container">
+                <canvas id="pricingChart"></canvas>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Resort</th>
+                        <th>Price (USD)</th>
+                        <th>Variance from Median</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Our Resort</td>
+                        <td>$432</td>
+                        <td>+12%</td>
+                    </tr>
+                    <tr>
+                        <td>Competitor A</td>
+                        <td>$386</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td>Competitor B</td>
+                        <td>$455</td>
+                        <td>+18%</td>
+                    </tr>
+                    <tr>
+                        <td>Competitor C</td>
+                        <td>$362</td>
+                        <td>-6%</td>
+                    </tr>
+                    <tr>
+                        <td>Competitor D</td>
+                        <td>$405</td>
+                        <td>+5%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Median</strong></td>
+                        <td><strong>$386</strong></td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    Price Positioning Insight
+                </h4>
+                <p>Competitor A has successfully increased rates by 18% year-over-year while maintaining high occupancy
+                    (87%), demonstrating that our target market can absorb higher prices when value proposition is
+                    strong. Competitor B commands the highest rates ($455) but does not disclose occupancy figures.</p>
+            </div>
+        </section>
+
+        <section id="occupancy-analysis">
+            <h2>
+                <span class="section-icon">%</span>
+                Occupancy Analysis
+            </h2>
+
+            <p>Our occupancy projection of 72% during peak season falls significantly below Competitor A's 87% rate,
+                suggesting a relationship between our premium pricing and lower occupancy.</p>
+
+            <div class="chart-row">
+                <div class="chart-card">
+                    <div class="chart-title">Our Projected Occupancy</div>
+                    <canvas id="ourOccupancyChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-title">Competitor A Occupancy</div>
+                    <canvas id="competitorOccupancyChart"></canvas>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Resort</th>
+                        <th>Occupancy Rate</th>
+                        <th>YoY Price Change</th>
+                        <th>Relationship</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Our Resort</td>
+                        <td>72%</td>
+                        <td>N/A</td>
+                        <td>Higher price, lower occupancy</td>
+                    </tr>
+                    <tr>
+                        <td>Competitor A</td>
+                        <td>87%</td>
+                        <td>+18%</td>
+                        <td>Higher price, higher occupancy</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    Occupancy Insight
+                </h4>
+                <p>The 15 percentage point gap between our occupancy and Competitor A's suggests that price alone is not
+                    determining occupancy rates. Further analysis of Competitor A reveals their strong focus on bundled
+                    amenities and exclusive experiences, which appears to be offsetting their increased prices.</p>
+            </div>
+        </section>
+
+        <section id="amenities-analysis">
+            <h2>
+                <span class="section-icon">+</span>
+                Amenities Analysis
+            </h2>
+
+            <p>A significant difference exists in the rate at which we bundle amenities compared to our competitors,
+                potentially explaining the occupancy gap despite similar pricing tiers.</p>
+
+            <h3>Bundled Amenities Offerings</h3>
+
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span>Our Offerings (25%)</span>
+                    <span>25%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-value our" style="width: 25%"></div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span>Competitor Offerings (60%)</span>
+                    <span>60%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-value competitor" style="width: 60%"></div>
+                </div>
+            </div>
+
+            <h3>Common Amenities Comparison</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Amenity</th>
+                        <th>Our Offerings</th>
+                        <th>Competitor Offerings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Spa Credits</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Airport Transfers</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Exclusive Dining</td>
+                        <td>✗</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Early Check-in</td>
+                        <td>✗</td>
+                        <td>✓</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    Amenities Insight
+                </h4>
+                <p>Our competitors are bundling amenities at more than double our rate (60% vs. 25%), offering
+                    additional high-value perks such as exclusive dining experiences and early check-in privileges. This
+                    comprehensive bundling strategy appears to contribute significantly to their higher conversion rates
+                    and occupancy levels, despite charging premium prices.</p>
+            </div>
+        </section>
+
+        <section id="strategic-recommendations">
+            <h2>
+                <span class="section-icon">✓</span>
+                Strategic Recommendations
+            </h2>
+
+            <p>Based on our competitive analysis, we recommend the following strategic initiatives to improve occupancy
+                while maintaining our premium pricing position.</p>
+
+            <div class="recommendations">
+                <div class="recommendation-card">
+                    <div class="recommendation-title">A/B Test Bundled Offerings</div>
+                    <div class="recommendation-desc">Test premium packages with spa credits and airport transfers to
+                        match competitor conversion rates.</div>
+                    <div class="impact-meter">
+                        <div class="impact-label">Impact:</div>
+                        <div class="impact-dots">
+                            <div class="impact-dot active"></div>
+                            <div class="impact-dot active"></div>
+                            <div class="impact-dot active"></div>
+                            <div class="impact-dot active"></div>
+                            <div class="impact-dot active"></div>
+                        </div>
+                        <div class="impact-label">High</div>
+                    </div>
+                </div>
+
+                <div class="recommendation-card">
+                    <div class="recommendation-title">Dynamic Rate Adjustments</div>
+                    <div class="recommendation-desc">Implement destination-specific pricing clusters to optimize for
+                        both occupancy and revenue.</div>
+                    <div class="impact-meter">
+                        <div class="impact-label">Impact:</div>
+                        <div class="impact-dots">
+                            <div class="impact-dot active"></div>
+                            <div class="impact-dot active"></div>
+                            <div class="impact-dot active"></div>
+                            <div class="impact-dot"></div>
+                            <div class="impact-dot"></div>
+                        </div>
+                        <div class="impact-label">Medium</div>
+                    </div>
+                </div>
+
+                <div class="recommendation-card">
+                    <div class="recommendation-title">Value Proposition Marketing</div>
+                    <div class="recommendation-desc">Emphasize unique experiences and exclusivity to justify premium
+                        pricing where appropriate.</div>
+                    <div class="impact-meter">
+                        <div class="impact-label">Impact:</div>
+                        <div class="impact-dots">
+                            <div class="impact-dot active"></div>
+                            <div class="impact-dot active"></div>
+                            <div class="impact-dot active"></div>
+                            <div class="impact-dot active"></div>
+                            <div class="impact-dot active"></div>
+                        </div>
+                        <div class="impact-label">High</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="impactChart"></canvas>
+            </div>
+
+            <div class="insight-box">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    Recommendation Insight
+                </h4>
+                <p>Our analysis indicates that bundled offerings and value proposition marketing have the highest
+                    potential impact on occupancy rates while maintaining premium pricing. Combined implementation of
+                    these strategies could increase occupancy by 8-12 percentage points, resulting in an estimated 9-14%
+                    revenue increase during peak season.</p>
+            </div>
+        </section>
+
+        <section id="implementation-roadmap">
+            <h2>
+                <span class="section-icon">📅</span>
+                Implementation Roadmap
+            </h2>
+
+            <p>We recommend a phased implementation approach to optimize results and allow for testing and refinement of
+                strategies.</p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-date">Immediate (Next 30 Days)</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Phase 1: Begin A/B Testing Bundled Offerings</div>
+                        <div class="timeline-text">
+                            <ul>
+                                <li>Develop premium packages with spa credits and airport transfers</li>
+                                <li>Launch A/B testing at key resort locations</li>
+                                <li>Establish baseline metrics for comparison</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-date">Within 60 Days</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Phase 2: Value Proposition Marketing Campaign</div>
+                        <div class="timeline-text">
+                            <ul>
+                                <li>Develop marketing materials emphasizing unique experiences</li>
+                                <li>Target high-value customer segments</li>
+                                <li>Implement across digital and traditional channels</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-date">Within 90 Days</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Phase 3: Dynamic Rate Adjustment System</div>
+                        <div class="timeline-text">
+                            <ul>
+                                <li>Implement destination-specific pricing clusters</li>
+                                <li>Develop automated adjustment system based on occupancy</li>
+                                <li>Train staff on new pricing strategy</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-date">Within 120 Days</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Phase 4: Evaluation and Optimization</div>
+                        <div class="timeline-text">
+                            <ul>
+                                <li>Analyze results from all implemented strategies</li>
+                                <li>Optimize based on performance data</li>
+                                <li>Develop long-term implementation plan</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    Implementation Insight
+                </h4>
+                <p>This phased approach allows for careful monitoring of each strategy's impact before full-scale
+                    implementation. Early results from A/B testing will inform refinements to later phases, allowing for
+                    optimized execution and maximum ROI.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <p>GiKA Travel Insights Report &copy; 2025</p>
+                </div>
+                <div class="footer-right">
+                    <p>Confidential - For Internal Use Only</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize all charts once the page is loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            // Pricing Chart
+            const pricingCtx = document.getElementById('pricingChart').getContext('2d');
+            const pricingChart = new Chart(pricingCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Our Resort', 'Comp A', 'Comp B', 'Comp C', 'Comp D'],
+                    datasets: [{
+                        label: 'Average Nightly Rate ($)',
+                        data: [432, 386, 455, 362, 405],
+                        backgroundColor: [
+                            '#8B5CF6',
+                            '#6366F1',
+                            '#3B82F6',
+                            '#10B981',
+                            '#14B8A6'
+                        ],
+                        borderColor: [
+                            '#7C3AED',
+                            '#4F46E5',
+                            '#2563EB',
+                            '#059669',
+                            '#0D9488'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return `$${context.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 500,
+                            ticks: {
+                                callback: function (value) {
+                                    return '$' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Our Occupancy Chart
+            const ourOccupancyCtx = document.getElementById('ourOccupancyChart').getContext('2d');
+            const ourOccupancyChart = new Chart(ourOccupancyCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Occupied', 'Vacant'],
+                    datasets: [{
+                        data: [72, 28],
+                        backgroundColor: [
+                            '#8B5CF6',
+                            '#E5E7EB'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Competitor Occupancy Chart
+            const competitorOccupancyCtx = document.getElementById('competitorOccupancyChart').getContext('2d');
+            const competitorOccupancyChart = new Chart(competitorOccupancyCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Occupied', 'Vacant'],
+                    datasets: [{
+                        data: [87, 13],
+                        backgroundColor: [
+                            '#6366F1',
+                            '#E5E7EB'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Impact Projection Chart
+            const impactCtx = document.getElementById('impactChart').getContext('2d');
+            const impactChart = new Chart(impactCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Current', 'With Bundled Offerings', 'With Value Marketing', 'With Both Strategies'],
+                    datasets: [
+                        {
+                            label: 'Occupancy Rate (%)',
+                            data: [72, 79, 77, 84],
+                            backgroundColor: '#8B5CF6',
+                            borderColor: '#7C3AED',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Revenue Increase (%)',
+                            data: [0, 7, 5, 12],
+                            backgroundColor: '#10B981',
+                            borderColor: '#059669',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Projected Impact of Strategic Recommendations',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    if (context.datasetIndex === 0) {
+                                        return `Occupancy: ${context.raw}%`;
+                                    } else {
+                                        return `Revenue Increase: ${context.raw}%`;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Occupancy Rate (%)'
+                            },
+                            min: 60,
+                            max: 90
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Revenue Increase (%)'
+                            },
+                            min: 0,
+                            max: 15,
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
