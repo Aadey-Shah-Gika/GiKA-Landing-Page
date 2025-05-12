@@ -83,7 +83,7 @@ const NavigationLink: React.FC<NavigationLinkProps> = ({ href, children }) => {
   return (
     <a 
       href={href} 
-      className="hover:text-[#671D78] transition-colors duration-300"
+      className="hover:text-[#671D78] font-[450] transition-colors duration-300"
     >
       {children}
     </a>
@@ -93,13 +93,13 @@ const NavigationLink: React.FC<NavigationLinkProps> = ({ href, children }) => {
 const Navigation: React.FC<NavigationProps> = ({ isScrolled }) => {
   const navLinks: NavLink[] = [
     { href: "/", label: "Home" },
-    { href: "/", label: "About Us" },
-    { href: "/", label: "Our Resources" },
+    { href: "/#technology", label: "Technology" },
+    { href: "/#use-cases", label: "Resources" },
     { href: "#", label: "Contact Us" },
   ];
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white backdrop-blur-md shadow-md py-5' : 'bg-transparent py-8'}`}>
+    <nav className="w-full z-50 transition-all duration-500 bg-transparent py-8">
       <div className="container mx-auto px-6 flex items-center justify-between">
         <div className="flex items-center cursor-pointer" onClick={() => window.location.href = '/'}>
           <Image src={Logo} alt="logo" className="h-8 w-10 text-purple-600 mr-2 animate-pulse-slow" />
@@ -417,7 +417,7 @@ const ContactInfo: React.FC = () => {
   ];
 
   return (
-    <div className='relative w-[90vw] mx-auto rounded-[2vw] overflow-hidden mb-24'>
+    <div className='relative w-[90vw] mx-auto rounded-2xl overflow-hidden mb-24'>
       {/* Gradient background matching the home page */}
       <div className='absolute inset-0 brightness-150 bg-gradient-to-r from-[#671D78] to-[#2E2680] z-0'></div>
       
@@ -657,7 +657,7 @@ export default function ContactPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800 font-sans">
+    <div className="min-h-screen bg-gray-50 text-gray-800 font-montserrat">
       <Navigation isScrolled={isScrolled} />
       <ContactHero />
       <ContactInfo />
