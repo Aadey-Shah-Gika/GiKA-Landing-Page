@@ -556,83 +556,36 @@ const QuickActions: React.FC = () => {
 // Footer Component (matching home page)
 // ==========================================
 
+// Footer Component
 const Footer: React.FC = () => {
-  const footerColumns = [
-    {
-      title: "Product",
-      links: [
-        { href: "#", label: "Features" },
-        { href: "#", label: "Solutions" },
-        { href: "#", label: "Pricing" },
-        { href: "#", label: "Case Studies" }
-      ]
-    },
-    {
-      title: "Resources",
-      links: [
-        { href: "#", label: "Documentation" },
-        { href: "#", label: "Blog" },
-        { href: "#", label: "API" },
-        { href: "#", label: "Support" }
-      ]
-    },
-    {
-      title: "Company",
-      links: [
-        { href: "#", label: "About" },
-        { href: "#", label: "Careers" },
-        { href: "#", label: "Contact" },
-        { href: "#", label: "Press" }
-      ]
-    }
-  ];
-
-  const legalLinks = [
-    { href: "#", label: "Privacy" },
-    { href: "#", label: "Terms" },
-    { href: "#", label: "Security" }
-  ];
-
   return (
-    <footer className="bg-gray-900 text-white py-16">
+    <footer className="bg-gray-900 text-white py-8">
       <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-4 gap-8">
-          <div>
-            <div className="flex items-center mb-4">
-              <Image src={Logo} alt="logo" className="h-8 w-10 text-purple-600 mr-2 animate-pulse-slow" />
-              <span className="text-xl font-bold text-white">GikaGraph, Inc.</span>
-            </div>
-            <p className="text-gray-400 text-sm">
-              Transforming enterprise data into actionable intelligence with specialized SLMs and dynamic entity graphs.
-            </p>
+        <div className="flex flex-col sm:flex-row justify-between items-center">
+          {/* Copyright on the left */}
+          <div className="text-gray-400 text-sm mb-4 sm:mb-0">
+            © 2025 GiKA AI. All rights reserved.
           </div>
-
-          {footerColumns.map((column, index) => (
-            <div key={index}>
-              <h4 className="font-medium mb-4">{column.title}</h4>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                {column.links.map((link, linkIndex) => (
-                  <li key={linkIndex}>
-                    <a href={link.href} className="hover:text-purple-400 transition-colors duration-300">
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-gray-400 text-sm mb-4 md:mb-0">
-            © 2025 GikaGraph, Inc. All rights reserved.
-          </div>
-          <div className="flex space-x-6">
-            {legalLinks.map((link, index) => (
-              <a key={index} href={link.href} className="text-gray-400 hover:text-purple-400 transition-colors duration-300">
-                {link.label}
-              </a>
-            ))}
+          
+          {/* Social Media links on the right */}
+          <div className="flex items-center space-x-4">
+            <span className="text-gray-400 text-sm hidden sm:inline">Follow us:</span>
+            <a
+              href="https://www.linkedin.com/company/gika-ai?trk=public_profile_topcard-current-company"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-purple-400 transition-colors duration-300"
+              aria-label="LinkedIn"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
