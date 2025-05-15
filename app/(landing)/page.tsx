@@ -874,19 +874,19 @@ const EntityGraphVisualization: React.FC = () => {
 const SLMTechnologySection: React.FC = () => {
   const features: TechFeature[] = [
     {
-      title: "Vertical-Specific Training",
+      title: "High-Precision Entity & Data Enrichment",
       description:
-        "Models tailored for healthcare, finance, e-commerce and more",
+        "Accurately identifies key business-specific entities, enriching your data for smarter decisions.",
     },
     {
-      title: "Entity Recognition",
+      title: "Domain-Tuned Intelligence",
       description:
-        "Precise identification of products, suppliers, regulations, and more",
+        "Tailored language model for your business context — sharp, grounded insights for complex queries.",
     },
     {
-      title: "Low Resource Requirements",
+      title: "Ultra-Efficient Architecture",
       description:
-        "10x more efficient than general-purpose LLMs with higher accuracy",
+        "Up to 10× lighter than general-purpose LLMs — faster insights, lower cost, higher accuracy.",
     },
   ];
 
@@ -897,8 +897,8 @@ const SLMTechnologySection: React.FC = () => {
           <div>
             <Badge color="blue">Entity-Aware SLMs</Badge>
             <p className="text-gray-700 mb-8 text-lg leading-relaxed">
-              Our small language models are fine-tuned for specific verticals to
-              understand domain-specific entities with unprecedented precision.
+              Purpose-built small language models engineered for deep domain
+              expertise and precise recognition of business-specific entities.
             </p>
             <div className="space-y-8">
               {features.map((feature, index) => (
