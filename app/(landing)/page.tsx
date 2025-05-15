@@ -8,7 +8,6 @@ import {
   Network,
   Eye,
   Code,
-  BarChart2,
   ArrowRight,
   Zap,
   Check,
@@ -24,7 +23,7 @@ import {
   BarChart3,
   Rocket,
   Globe,
-  Dot
+  Dot,
 } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -116,11 +115,6 @@ type SectionHeaderProps = {
   className?: string;
   centered?: boolean;
   light?: boolean;
-};
-
-type FeatureListItemProps = {
-  text: string;
-  color?: string;
 };
 
 type TechFeatureCardProps = {
@@ -217,11 +211,6 @@ type FooterLink = {
 };
 
 type FooterColumnProps = {
-  title: string;
-  links: FooterLink[];
-};
-
-type FooterColumn = {
   title: string;
   links: FooterLink[];
 };
@@ -392,8 +381,16 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 
   const renderIcon = (iconName: string, isError: boolean = false) => {
     const Icon = iconMap[iconName];
-    if (!Icon) return null;
-    return <Icon className={`w-5 h-5 flex-shrink-0 ${isError ? 'text-gray-400' : 'text-green-400'}`} />;
+    if (!Icon) {
+      return null;
+    }
+    return (
+      <Icon
+        className={`w-5 h-5 flex-shrink-0 ${
+          isError ? "text-gray-400" : "text-green-400"
+        }`}
+      />
+    );
   };
 
   return (
@@ -1039,339 +1036,6 @@ const UseCaseAction: React.FC<UseCaseActionProps> = ({
   );
 };
 
-// Example Panel Component
-const EcommercePanel: React.FC = () => {
-  const features: UseCaseFeature[] = [
-    "Match customers with perfect product combinations",
-    "Understand context behind complex search terms",
-    "Dramatically improve conversion rates for edge cases",
-  ];
-
-  return (
-    <div className="flex flex-col md:flex-row">
-      <div className="md:w-1/2 bg-gradient-to-br from-purple-50 to-indigo-50 p-8">
-        <UseCaseHeader
-          icon={<BarChart2 className="h-6 w-6 text-purple-600" />}
-          title="Precision Product Discovery"
-        />
-        <p className="text-gray-600 mb-4">
-          Resolve complex, long-tail queries with 99% precision, connecting
-          customers to exactly what they need.
-        </p>
-        <UseCaseFeatures features={features} />
-        <UseCaseAction text="Explore E-commerce Solutions" />
-      </div>
-      <div className="md:w-1/2 p-8">
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <div className="flex items-center mb-4">
-            <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
-              <Database className="h-4 w-4 text-purple-600" />
-            </div>
-            <div className="text-lg font-medium">Example Query</div>
-          </div>
-          <div className="mb-6">
-            <div className="bg-white p-4 rounded-lg border border-gray-200 text-gray-800 mb-4">
-              "vegan skincare in Mumbai under $10 with recyclable packaging"
-            </div>
-            <div className="text-sm text-gray-500">
-              GikaGraph finds products matching all criteria with 99% precision
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-all duration-300">
-              <div className="flex justify-between items-center mb-2">
-                <div className="font-medium">Aaranya Natural's Aloe Gel</div>
-                <div className="text-sm text-purple-600">₹599 ($7.20)</div>
-              </div>
-              <div className="flex items-center text-sm text-gray-500 mb-2">
-                <div className="flex text-yellow-400 mr-1">
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                </div>
-                124 reviews
-              </div>
-              <div className="flex space-x-2">
-                <CategoryPill>Vegan</CategoryPill>
-                <CategoryPill color="indigo">Recyclable</CategoryPill>
-              </div>
-            </div>
-
-            <div className="bg-white p-4 rounded-lg border border-gray-200 opacity-70 hover:opacity-100 hover:shadow-md transition-all duration-300">
-              <div className="flex justify-between items-center mb-2">
-                <div className="font-medium">Earth Rhythm Face Wash</div>
-                <div className="text-sm text-purple-600">₹650 ($7.80)</div>
-              </div>
-              <div className="flex items-center text-sm text-gray-500 mb-2">
-                <div className="flex text-yellow-400 mr-1">
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                  <span>☆</span>
-                </div>
-                96 reviews
-              </div>
-              <div className="flex space-x-2">
-                <CategoryPill>Vegan</CategoryPill>
-                <CategoryPill color="indigo">Recyclable</CategoryPill>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// TravelPanel Component
-const TravelPanel: React.FC = () => {
-  const features: UseCaseFeature[] = [
-    "Identify patterns across cases for rare disease diagnosis",
-    "Connect symptoms to latest research findings",
-    "Provide evidence-based treatment recommendations",
-  ];
-
-  return (
-    <div className="flex flex-col md:flex-row">
-      <div className="md:w-1/2 bg-gradient-to-br from-indigo-50 to-purple-50 p-8">
-        <UseCaseHeader
-          icon={<BarChart2 className="h-6 w-6 text-indigo-600" />}
-          title="Advanced Diagnostic Support"
-          color="indigo"
-        />
-        <p className="text-gray-600 mb-4">
-          Diagnose rare conditions by connecting patient records with
-          comprehensive medical knowledge graphs.
-        </p>
-        <UseCaseFeatures features={features} />
-        <UseCaseAction text="Explore Healthcare Solutions" color="indigo" />
-      </div>
-      <div className="md:w-1/2 p-8">
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <div className="flex items-center mb-4">
-            <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
-              <Database className="h-4 w-4 text-indigo-600" />
-            </div>
-            <div className="text-lg font-medium">Patient Case Analysis</div>
-          </div>
-
-          <div className="bg-white p-4 rounded-lg border border-gray-200 mb-4 hover:shadow-md transition-all duration-300">
-            <div className="flex justify-between items-center mb-3">
-              <div className="font-medium">Symptom Pattern Analysis</div>
-              <div className="text-xs px-2 py-1 bg-indigo-100 text-indigo-800 rounded">
-                92% Confidence
-              </div>
-            </div>
-            <div className="space-y-2 mb-4">
-              <div className="flex items-start">
-                <Check className="h-4 w-4 text-purple-600 mt-0.5 mr-2 flex-shrink-0" />
-                <span className="text-sm text-gray-600">
-                  Burning pain in extremities with pronounced heat sensitivity
-                </span>
-              </div>
-              <div className="flex items-start">
-                <Check className="h-4 w-4 text-purple-600 mt-0.5 mr-2 flex-shrink-0" />
-                <span className="text-sm text-gray-600">
-                  Symptoms worse during warmth and exercise, improves with
-                  cooling
-                </span>
-              </div>
-              <div className="flex items-start">
-                <Check className="h-4 w-4 text-purple-600 mt-0.5 mr-2 flex-shrink-0" />
-                <span className="text-sm text-gray-600">
-                  Normal nerve conduction studies despite persistent pain
-                </span>
-              </div>
-            </div>
-            <div className="p-3 bg-indigo-50 rounded-lg">
-              <p className="text-sm font-medium mb-1">
-                Diagnosis: Erythromelalgia
-              </p>
-              <p className="text-xs text-gray-600">
-                A rare vascular peripheral pain disorder often misdiagnosed as
-                inflammatory conditions.
-              </p>
-            </div>
-          </div>
-
-          <div className="text-sm text-gray-500">
-            GikaGraph analyzed 3,724 similar cases and identified key diagnostic
-            patterns that standard protocols missed.
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// FinancePanel Component
-const FinancePanel: React.FC = () => {
-  const features: UseCaseFeature[] = [
-    "Identify stocks affected by regulatory decisions",
-    "Predict market movements from complex event triggers",
-    "Monitor supply chain impacts on financial performance",
-  ];
-
-  return (
-    <div className="flex flex-col md:flex-row">
-      <div className="md:w-1/2 bg-gradient-to-br from-violet-50 to-purple-50 p-8">
-        <UseCaseHeader
-          icon={<BarChart2 className="h-6 w-6 text-violet-600" />}
-          title="Real-time Market Intelligence"
-          color="violet"
-        />
-        <p className="text-gray-600 mb-4">
-          Track market changes and regulatory impacts on investments with
-          interconnected financial data.
-        </p>
-        <UseCaseFeatures features={features} color="violet" />
-        <UseCaseAction text="Explore Finance Solutions" color="violet" />
-      </div>
-      <div className="md:w-1/2 p-8">
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <div className="flex items-center mb-4">
-            <div className="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center mr-3">
-              <Database className="h-4 w-4 text-violet-600" />
-            </div>
-            <div className="text-lg font-medium">
-              Regulatory Impact Analysis
-            </div>
-          </div>
-
-          <div className="bg-white p-4 rounded-lg border border-gray-200 mb-4 hover:shadow-md transition-all duration-300">
-            <div className="font-medium mb-3">
-              FDA Approval Delays: Impacted Stocks
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex justify-between items-center p-2 bg-red-50 rounded">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                  <span className="font-medium">AstraZeneca (AZN)</span>
-                </div>
-                <span className="text-red-600">-2.4%</span>
-              </div>
-
-              <div className="flex justify-between items-center p-2 bg-red-50 rounded">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                  <span className="font-medium">Novartis (NVS)</span>
-                </div>
-                <span className="text-red-600">-1.7%</span>
-              </div>
-
-              <div className="flex justify-between items-center p-2 bg-amber-50 rounded">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-amber-500 rounded-full mr-2"></div>
-                  <span className="font-medium">
-                    Bristol Myers Squibb (BMY)
-                  </span>
-                </div>
-                <span className="text-amber-600">-0.8%</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-sm text-gray-500">
-            GikaGraph detected the pattern 36 hours before major market
-            movements by connecting FDA documents with company pipeline data.
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// LogisticsPanel Component
-const LogisticsPanel: React.FC = () => {
-  const features: UseCaseFeature[] = [
-    "Anticipate shipping delays from environmental factors",
-    "Identify backup suppliers before disruptions occur",
-    "Optimize inventory based on predicted delivery patterns",
-  ];
-
-  return (
-    <div className="flex flex-col md:flex-row">
-      <div className="md:w-1/2 bg-gradient-to-br from-fuchsia-50 to-purple-50 p-8">
-        <UseCaseHeader
-          icon={<BarChart2 className="h-6 w-6 text-fuchsia-600" />}
-          title="Supply Chain Risk Detection"
-          color="fuchsia"
-        />
-        <p className="text-gray-600 mb-4">
-          Predict supplier risks using integrated weather data, shipment
-          histories, and geopolitical events.
-        </p>
-        <UseCaseFeatures features={features} color="fuchsia" />
-        <UseCaseAction text="Explore Logistics Solutions" color="fuchsia" />
-      </div>
-      <div className="md:w-1/2 p-8">
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <div className="flex items-center mb-4">
-            <div className="w-8 h-8 rounded-full bg-fuchsia-100 flex items-center justify-center mr-3">
-              <Database className="h-4 w-4 text-fuchsia-600" />
-            </div>
-            <div className="text-lg font-medium">Risk Assessment Report</div>
-          </div>
-
-          <div className="bg-white p-4 rounded-lg border border-gray-200 mb-4 hover:shadow-md transition-all duration-300">
-            <div className="font-medium mb-3">
-              Port of Singapore: Upcoming Delays
-            </div>
-
-            <div className="flex items-center mb-4">
-              <div className="w-full bg-gray-200 rounded-full h-2.5">
-                <div
-                  className="bg-purple-500 h-2.5 rounded-full transition-all duration-1000"
-                  style={{ width: "68%" }}
-                ></div>
-              </div>
-              <span className="ml-2 text-sm font-medium">68%</span>
-            </div>
-
-            <div className="space-y-2 text-sm">
-              <div className="flex items-start">
-                <div className="mt-0.5 bg-purple-100 p-1 rounded-full mr-2 flex-shrink-0">
-                  <Check className="h-3 w-3 text-purple-600" />
-                </div>
-                <span className="text-gray-600">
-                  Seasonal storm patterns predicted for March 15-22
-                </span>
-              </div>
-              <div className="flex items-start">
-                <div className="mt-0.5 bg-purple-100 p-1 rounded-full mr-2 flex-shrink-0">
-                  <Check className="h-3 w-3 text-purple-600" />
-                </div>
-                <span className="text-gray-600">
-                  Historical delay correlation: 78% probability of 3-5 day
-                  delays
-                </span>
-              </div>
-              <div className="flex items-start">
-                <div className="mt-0.5 bg-purple-100 p-1 rounded-full mr-2 flex-shrink-0">
-                  <Check className="h-3 w-3 text-purple-600" />
-                </div>
-                <span className="text-gray-600">
-                  15 scheduled shipments affected with estimated $42K impact
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-sm text-gray-500">
-            GikaGraph recommends rerouting 8 critical shipments through Port of
-            Hong Kong to prevent production delays.
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 // Tab Navigation Component
 const TabNavigation: React.FC<TabNavigationProps> = ({
   activeTab,
@@ -1486,7 +1150,7 @@ const TestimonialsSection: React.FC = () => {
       title: "CEO, Drezily Inc.",
       text: "GikaGraph transformed how we handle product search and recommendations by dramatically improving the quality and consistency of our data. With more accurate entity matching for complex queries due to improved data quality, the discovery rate for niche product searches improved substantially within a short span of time",
       delay: "0s",
-    }
+    },
   ];
 
   return (
@@ -1551,27 +1215,6 @@ const CTASection: React.FC = () => {
 // Footer Components
 // ==========================================
 
-const FooterColumn: React.FC<FooterColumnProps> = ({ title, links }) => {
-  return (
-    <div>
-      <h4 className="font-medium mb-4">{title}</h4>
-      <ul className="space-y-2 text-gray-400 text-sm">
-        {links.map((link, index) => (
-          <li key={index}>
-            <a
-              href={link.href}
-              className="hover:text-purple-400 transition-colors duration-300"
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-// Footer Component
 const Footer: React.FC = () => {
   return (
     <footer className="bg-gray-900 text-white py-8">
@@ -1581,10 +1224,12 @@ const Footer: React.FC = () => {
           <div className="text-gray-400 text-sm mb-4 sm:mb-0">
             © 2025 GiKA AI. All rights reserved.
           </div>
-          
+
           {/* Social Media links on the right */}
           <div className="flex items-center space-x-4">
-            <span className="text-gray-400 text-sm hidden sm:inline">Follow us:</span>
+            <span className="text-gray-400 text-sm hidden sm:inline">
+              Follow us:
+            </span>
             <a
               href="https://www.linkedin.com/company/gika-ai?trk=public_profile_topcard-current-company"
               target="_blank"
@@ -1598,7 +1243,7 @@ const Footer: React.FC = () => {
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
               </svg>
             </a>
           </div>
@@ -1637,7 +1282,6 @@ export default function GikaGraphLanding() {
           start: "top top",
           end: "800 top",
           scrub: true,
-          // markers: true, // Uncomment for debugging
         },
       });
 

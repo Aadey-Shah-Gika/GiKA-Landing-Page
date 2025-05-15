@@ -1,11 +1,20 @@
-"use client"
+"use client";
 
-import Image from 'next/image';
-import React, { useState, useEffect, ReactNode } from 'react';
+import Image from "next/image";
+import React, { useState, useEffect, ReactNode } from "react";
 import { InlineWidget } from "react-calendly";
-import { ChevronRight, Network, Eye, Code, BarChart2, ArrowRight, Zap, Lock, Server, Check, ExternalLink, Mail, Phone, MapPin, Send, Calendar, MessageCircle, Building, User, MessageSquare, Clock, Globe, Users, CheckCircle, CalendarCheck } from 'lucide-react';
-import Logo from "../logo.png"
-import GrainyFilm from '../grany-film.png';
+import {
+  ArrowRight,
+  Mail,
+  Phone,
+  MapPin,
+  User,
+  MessageSquare,
+  CheckCircle,
+  CalendarCheck,
+} from "lucide-react";
+import Logo from "../logo.png";
+import GrainyFilm from "../grany-film.png";
 
 // ==========================================
 // Types
@@ -15,7 +24,7 @@ type ButtonProps = {
   children: ReactNode;
   onClick?: () => void;
   className?: string;
-  type?: 'button' | 'submit' | 'reset';
+  type?: "button" | "submit" | "reset";
   disabled?: boolean;
 };
 
@@ -44,33 +53,37 @@ type NavigationProps = {
 // ==========================================
 
 // Button Components (matching the home page)
-const PrimaryButton: React.FC<ButtonProps> = ({ children, onClick, className = '', type = 'button', disabled = false }) => {
+const PrimaryButton: React.FC<ButtonProps> = ({
+  children,
+  onClick,
+  className = "",
+  type = "button",
+  disabled = false,
+}) => {
   return (
-    <button 
+    <button
       type={type}
       onClick={onClick}
       disabled={disabled}
       className={`relative overflow-hidden bg-gradient-to-r from-[#671D78] to-[#2E2680] 
         text-white px-6 py-3 rounded-lg hover:rounded-[2rem] font-[350] 
         flex items-center justify-center hover:shadow-lg transition-all duration-300 group 
-        ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
+        ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}
     >
-      <span className="relative z-10 flex items-center">
-        {children}
-      </span>
-      <div className="absolute inset-0 bg-gradient-to-l from-[#671D78] to-[#2E2680] 
-        opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <span className="relative z-10 flex items-center">{children}</span>
+      <div
+        className="absolute inset-0 bg-gradient-to-l from-[#671D78] to-[#2E2680] 
+        opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      ></div>
     </button>
   );
 };
 
 // Layout Components
-const Section: React.FC<SectionProps> = ({ id, className = '', children }) => {
+const Section: React.FC<SectionProps> = ({ id, className = "", children }) => {
   return (
     <section id={id} className={`py-24 md:w-[90vw] md:mx-auto ${className}`}>
-      <div className="container mx-auto px-6">
-        {children}
-      </div>
+      <div className="container mx-auto px-6">{children}</div>
     </section>
   );
 };
@@ -81,8 +94,8 @@ const Section: React.FC<SectionProps> = ({ id, className = '', children }) => {
 
 const NavigationLink: React.FC<NavigationLinkProps> = ({ href, children }) => {
   return (
-    <a 
-      href={href} 
+    <a
+      href={href}
       className="hover:text-[#671D78] font-[450] transition-colors duration-300"
     >
       {children}
@@ -101,8 +114,15 @@ const Navigation: React.FC<NavigationProps> = ({ isScrolled }) => {
   return (
     <nav className="w-full z-50 transition-all duration-500 bg-transparent py-8">
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <div className="flex items-center cursor-pointer" onClick={() => window.location.href = '/'}>
-          <Image src={Logo} alt="logo" className="h-8 w-10 text-purple-600 mr-2 animate-pulse-slow" />
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={() => (window.location.href = "/")}
+        >
+          <Image
+            src={Logo}
+            alt="logo"
+            className="h-8 w-10 text-purple-600 mr-2 animate-pulse-slow"
+          />
           <span className="text-xl font-bold text-black">GiKA.AI</span>
         </div>
 
@@ -115,9 +135,13 @@ const Navigation: React.FC<NavigationProps> = ({ isScrolled }) => {
         </div>
 
         <div>
-          <PrimaryButton onClick={() => {
-            window.location.href = '/contact';
-          }}>Book Demo</PrimaryButton>
+          <PrimaryButton
+            onClick={() => {
+              window.location.href = "/contact";
+            }}
+          >
+            Book Demo
+          </PrimaryButton>
         </div>
       </div>
     </nav>
@@ -190,7 +214,7 @@ const ContactForm: React.FC = () => {
     company: "",
     message: "",
   });
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
@@ -206,7 +230,7 @@ const ContactForm: React.FC = () => {
       }
 
       // Small delay to show loading state
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Show Calendly after successful form submission
       setShowCalendly(true);
@@ -348,7 +372,8 @@ const ContactHero: React.FC = () => {
           Get in Touch with Our Experts
         </h1>
         <p className="text-lg text-gray-600 font-[350] mb-8 max-w-2xl mx-auto animate-fade-in">
-          Ready to transform your data into actionable intelligence? Our team is here to help you get started with GiKA.AI.
+          Ready to transform your data into actionable intelligence? Our team is
+          here to help you get started with GiKA.AI.
         </p>
       </div>
     </Section>
@@ -371,7 +396,7 @@ const ContactInfoItem: React.FC<{
     </div>
     <div>
       <h3 className="font-medium text-lg mb-1 text-white">{title}</h3>
-      {details.map((detail, index) => 
+      {details.map((detail, index) =>
         isLink ? (
           <a
             key={index}
@@ -381,7 +406,9 @@ const ContactInfoItem: React.FC<{
             {detail}
           </a>
         ) : (
-          <p key={index} className="text-white/80 text-sm">{detail}</p>
+          <p key={index} className="text-white/80 text-sm">
+            {detail}
+          </p>
         )
       )}
     </div>
@@ -396,42 +423,42 @@ const ContactInfo: React.FC = () => {
       details: [
         "Indiqube Edge,",
         "Outer Ring Rd, Bengaluru,",
-        "Karnataka 560102, India"
-      ]
+        "Karnataka 560102, India",
+      ],
     },
     {
       icon: <Mail className="h-5 w-5 text-white" />,
       title: "Email",
-      details: [
-        "contact@gikagraph.ai"
-      ],
-      isLink: true
+      details: ["contact@gikagraph.ai"],
+      isLink: true,
     },
     {
       icon: <Phone className="h-5 w-5 text-white" />,
       title: "Phone",
-      details: [
-        "+91 9810350324"
-      ]
-    }
+      details: ["+91 9810350324"],
+    },
   ];
 
   return (
-    <div className='relative w-[90vw] mx-auto rounded-2xl overflow-hidden mb-24'>
+    <div className="relative w-[90vw] mx-auto rounded-2xl overflow-hidden mb-24">
       {/* Gradient background matching the home page */}
-      <div className='absolute inset-0 brightness-150 bg-gradient-to-r from-[#671D78] to-[#2E2680] z-0'></div>
-      
+      <div className="absolute inset-0 brightness-150 bg-gradient-to-r from-[#671D78] to-[#2E2680] z-0"></div>
+
       {/* Grainy film effect overlay */}
-      <Image src={GrainyFilm} alt="grainy film" className='w-full h-full object-cover absolute z-0 opacity-10' />
-      
+      <Image
+        src={GrainyFilm}
+        alt="grainy film"
+        className="w-full h-full object-cover absolute z-0 opacity-10"
+      />
+
       <div className="relative z-10 py-16 px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl font-bold text-white mb-6">Get in Touch</h2>
           <p className="text-purple-100 mb-8">
-            We're here to help and answer any questions you might have. We
-            look forward to hearing from you.
+            We're here to help and answer any questions you might have. We look
+            forward to hearing from you.
           </p>
-          
+
           <div className="grid md:grid-cols-3 gap-12">
             {contactDetails.map((detail, index) => (
               <ContactInfoItem
@@ -442,32 +469,6 @@ const ContactInfo: React.FC = () => {
                 isLink={detail.isLink}
               />
             ))}
-          </div>
-          {/* Why Choose Us Section */}
-          <div className="mt-12 bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-            <h3 className="text-xl font-bold text-white mb-6">
-              Why Partner With GiKA.AI?
-            </h3>
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="flex-shrink-0 bg-white/20 p-2 rounded-lg">
-                  <Clock className="h-5 w-5 text-white" />
-                </div>
-                <p className="text-sm text-white/90">24/7 Support & Assistance</p>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="flex-shrink-0 bg-white/20 p-2 rounded-lg">
-                  <Globe className="h-5 w-5 text-white" />
-                </div>
-                <p className="text-sm text-white/90">GiKA.AI: Your Complete AI Platform</p>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="flex-shrink-0 bg-white/20 p-2 rounded-lg">
-                  <Users className="h-5 w-5 text-white" />
-                </div>
-                <p className="text-sm text-white/90">Trusted by Fortune 500 Companies</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -487,7 +488,8 @@ const ContactFormSection: React.FC = () => {
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold mb-4">Schedule Your Demo</h2>
             <p className="text-gray-600 font-[350]">
-              Fill out the form below and our team will get back to you within 24 hours.
+              Fill out the form below and our team will get back to you within
+              24 hours.
             </p>
           </div>
           <ContactForm />
@@ -498,65 +500,9 @@ const ContactFormSection: React.FC = () => {
 };
 
 // ==========================================
-// Quick Actions Section
-// ==========================================
-
-const QuickActions: React.FC = () => {
-  const actions = [
-    {
-      icon: <Calendar className="h-8 w-8" />,
-      title: "Schedule Demo",
-      description: "Book a personalized demonstration of GiKa AI solutions",
-      action: "Request Demo",
-      color: "purple"
-    },
-    {
-      icon: <MessageCircle className="h-8 w-8" />,
-      title: "Live Chat Support",
-      description: "Get instant answers to your questions",
-      action: "Start Chat",
-      color: "indigo"
-    },
-    {
-      icon: <Building className="h-8 w-8" />,
-      title: "Enterprise Consultation",
-      description: "Discuss custom enterprise solutions",
-      action: "Request Demo",
-      color: "violet"
-    }
-  ];
-
-  return (
-    <Section className="bg-gray-50">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">Need Immediate Assistance?</h2>
-        <p className="text-gray-600 font-[350]">Choose from our quick action options to get help right away.</p>
-      </div>
-
-      <div className="grid md:grid-cols-3 gap-8">
-        {actions.map((action, index) => (
-          <div key={index} className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200">
-            <div className={`w-16 h-16 bg-${action.color}-100 rounded-lg flex items-center justify-center mb-4 text-${action.color}-600`}>
-              {action.icon}
-            </div>
-            <h3 className="text-xl font-bold mb-2">{action.title}</h3>
-            <p className="text-gray-600 mb-4 text-sm">{action.description}</p>
-            <button className={`text-${action.color}-600 hover:text-${action.color}-700 font-medium text-sm flex items-center transition-colors duration-300`}>
-              {action.action}
-              <ArrowRight className="ml-1 h-4 w-4" />
-            </button>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-};
-
-// ==========================================
 // Footer Component (matching home page)
 // ==========================================
 
-// Footer Component
 const Footer: React.FC = () => {
   return (
     <footer className="bg-gray-900 text-white py-8">
@@ -566,10 +512,12 @@ const Footer: React.FC = () => {
           <div className="text-gray-400 text-sm mb-4 sm:mb-0">
             © 2025 GiKA AI. All rights reserved.
           </div>
-          
+
           {/* Social Media links on the right */}
           <div className="flex items-center space-x-4">
-            <span className="text-gray-400 text-sm hidden sm:inline">Follow us:</span>
+            <span className="text-gray-400 text-sm hidden sm:inline">
+              Follow us:
+            </span>
             <a
               href="https://www.linkedin.com/company/gika-ai?trk=public_profile_topcard-current-company"
               target="_blank"
@@ -583,7 +531,7 @@ const Footer: React.FC = () => {
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
               </svg>
             </a>
           </div>
@@ -605,8 +553,8 @@ export default function ContactPage() {
       setIsScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -615,7 +563,6 @@ export default function ContactPage() {
       <ContactHero />
       <ContactInfo />
       <ContactFormSection />
-      {/* <QuickActions /> */}
       <Footer />
     </div>
   );
