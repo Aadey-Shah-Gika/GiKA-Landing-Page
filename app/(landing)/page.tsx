@@ -644,8 +644,8 @@ const HeroSection: React.FC = () => {
   return (
     <Section className="text-black py-8 md:py-0 md:h-[75vh] flex flex-col justify-center">
       <div className="md:h-full mb-8 md:mb-16 animate-slide-up flex flex-col justify-center items-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem] text-center font-[400] leading-tight mb-4 md:mb-6 font-montserrat px-4">
-          AI That Truly Understands Your Data
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[5rem] text-center font-[400] leading-tight mb-4 md:mb-6 font-montserrat px-4">
+          AI That Truly Understands Your Business
         </h1>
         <p className="text-base sm:text-lg text-center text-black font-[350] mb-6 md:mb-8 max-w-[90%] sm:max-w-[85%] md:max-w-[80%] px-4">
           Transform fragmented data into grounded, actionable insights with our
@@ -654,7 +654,7 @@ const HeroSection: React.FC = () => {
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 px-4">
           <PrimaryButton
             onClick={() => {
-              window.location.href = "/contact";
+              window.location.href = "#use-cases";
             }}
           >
             Explore Platform
@@ -974,7 +974,7 @@ const TechnologySection: React.FC = () => {
       <div className="max-w-6xl mx-auto">
         <SectionHeader
           title="Advanced Engineering for Unrivaled Intelligence"
-          subtitle="GikaGraph combines specialized small language models with dynamic entity graphs to create a powerful data layer."
+          subtitle="GiKA combines specialized small language models with dynamic entity graphs to create a powerful data layer."
         />
 
         <div className="grid grid-cols-1 gap-24">
@@ -1087,7 +1087,7 @@ const UseCasesSection: React.FC = () => {
     <Section id="use-cases">
       <SectionHeader
         title="Experience the Evolution of Industry Solutions"
-        subtitle="GikaGraph is transforming how enterprises interact with data across industries."
+        subtitle="GiKA is transforming how enterprises interact with data across industries."
       />
 
       <TabNavigation
