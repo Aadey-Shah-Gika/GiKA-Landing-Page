@@ -708,12 +708,9 @@ const ProblemSolutionSection: React.FC = () => {
       title: "Own Your Data",
       description: "Businesses suffer due to:",
       frontPoints: [
-        { icon: "Dot", text: "Low-Quality, Incomplete Data" },
-        {
-          icon: "Dot",
-          text: "Missing attributes resulting in ineffective search",
-        },
-        { icon: "Dot", text: "No Data Ownership" },
+        { icon: "Dot", text: "Fragmented & Inconsistent Data" },
+        { icon: "Dot", text: "No unified Intelligence" },
+        { icon: "Dot", text: "Knowledge is scattered, no clear ownership" },
       ],
       backTitle: "With GiKA, You empower your business with:",
       backDescription: "",
@@ -724,10 +721,6 @@ const ProblemSolutionSection: React.FC = () => {
           text: "Smarter Discovery – Powers long-tail, complex queries",
         },
         { icon: "Shield", text: "Data Ownership & Transparency" },
-        {
-          icon: "BarChart3",
-          text: "Uplift – Up to 30% increase in discovery-led conversions",
-        },
         {
           icon: "Rocket",
           text: "Faster Decisions - insight-rich data foundation",
@@ -884,9 +877,9 @@ const SLMTechnologySection: React.FC = () => {
         "Tailored language model for your business context — sharp, grounded insights for complex queries.",
     },
     {
-      title: "Ultra-Efficient Architecture",
+      title: "Knowledge-Centric Architecture",
       description:
-        "Up to 10× lighter than general-purpose LLMs — faster insights, lower cost, higher accuracy.",
+        "Purpose-built for your business— delivering faster insights with higher accuracy.",
     },
   ];
 

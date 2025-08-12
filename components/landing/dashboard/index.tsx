@@ -16,7 +16,6 @@ import {
   Pie,
   Cell,
   Sector,
-  Line,
   ComposedChart,
   TooltipProps,
 } from "recharts";
@@ -25,23 +24,10 @@ import {
 gsap.registerPlugin(ScrollTrigger);
 
 // Type definitions
-interface GMVData {
-  gmv: string;
-  gmvValue: number;
-  directSavingsMin: number;
-  directSavingsMax: number;
-  gmvUpliftMin: number;
-  gmvUpliftMax: number;
-  totalMinROI: number;
-  totalMaxROI: number;
-}
-
 interface CapabilityData {
   capability: string;
   description: string;
-  min: number;
-  max: number;
-  average: number;
+  value: number;
 }
 
 interface ImpactBreakdownData {
@@ -50,15 +36,10 @@ interface ImpactBreakdownData {
   percentage: number;
 }
 
-interface ScaledCapabilityData extends CapabilityData {
-  scaledAverage: number;
-}
-
-interface TotalImpactData {
-  gmv: string;
+interface CategoryComparisonData {
+  category: string;
   "Direct Savings": number;
-  "GMV Uplift": number;
-  "Total Impact": number;
+  "Decision Enhancement": number;
 }
 
 interface CustomTooltipProps extends TooltipProps<number, string> {
@@ -72,21 +53,20 @@ interface CustomTooltipProps extends TooltipProps<number, string> {
 }
 
 const GikaDashboard: React.FC = () => {
-  const [selectedGMV, setSelectedGMV] = useState<string>("$100M");
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   // Animation states for charts
   const [isPieChartVisible, setIsPieChartVisible] = useState(false);
   const [isSavingsChartVisible, setIsSavingsChartVisible] = useState(false);
   const [isUpliftChartVisible, setIsUpliftChartVisible] = useState(false);
-  const [isTotalImpactChartVisible, setIsTotalImpactChartVisible] =
+  const [isCategoryComparisonVisible, setIsCategoryComparisonVisible] =
     useState(false);
 
   // Refs for animated sections
   const pieChartRef = useRef<HTMLDivElement>(null);
   const savingsChartRef = useRef<HTMLDivElement>(null);
   const upliftChartRef = useRef<HTMLDivElement>(null);
-  const totalImpactChartRef = useRef<HTMLDivElement>(null);
+  const categoryComparisonRef = useRef<HTMLDivElement>(null);
   const keyPropositionRef = useRef<HTMLDivElement>(null);
   const keyPropositionItemsRef = useRef<HTMLDivElement[]>([]);
 
@@ -156,10 +136,10 @@ const GikaDashboard: React.FC = () => {
         );
       }
 
-      // Total Impact Chart Animation
-      if (totalImpactChartRef.current) {
+      // Category Comparison Chart Animation
+      if (categoryComparisonRef.current) {
         gsap.fromTo(
-          totalImpactChartRef.current,
+          categoryComparisonRef.current,
           { opacity: 0, scale: 0.9 },
           {
             opacity: 1,
@@ -167,10 +147,10 @@ const GikaDashboard: React.FC = () => {
             duration: 0.6,
             ease: "power2.out",
             scrollTrigger: {
-              trigger: totalImpactChartRef.current,
+              trigger: categoryComparisonRef.current,
               start: "top 80%",
               end: "bottom 20%",
-              onEnter: () => setIsTotalImpactChartVisible(true),
+              onEnter: () => setIsCategoryComparisonVisible(true),
               once: true,
             },
           }
@@ -205,123 +185,69 @@ const GikaDashboard: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
-  // GMV Data
-  const gmvData: GMVData[] = [
+  // Static data for $100M AUM
+  const directSavingsData: CapabilityData[] = [
     {
-      gmv: "$10M",
-      gmvValue: 10000000,
-      directSavingsMin: 225000,
-      directSavingsMax: 450000,
-      gmvUpliftMin: 800000,
-      gmvUpliftMax: 1450000,
-      totalMinROI: 10.25,
-      totalMaxROI: 19,
+      capability: "Consultancy cost and Market Research",
+      description: "Replace expensive industry reports and consultants",
+      value: 1250000, // $1M-$1.5M average
     },
     {
-      gmv: "$50M",
-      gmvValue: 50000000,
-      directSavingsMin: 1125000,
-      directSavingsMax: 2250000,
-      gmvUpliftMin: 4000000,
-      gmvUpliftMax: 7250000,
-      totalMinROI: 10.25,
-      totalMaxROI: 19,
+      capability: "Reporting Automation",
+      description: "Automated portfolio monitoring & LP reporting",
+      value: 750000, // $500K-$1M average
     },
     {
-      gmv: "$100M",
-      gmvValue: 100000000,
-      directSavingsMin: 2250000,
-      directSavingsMax: 4500000,
-      gmvUpliftMin: 8000000,
-      gmvUpliftMax: 14500000,
-      totalMinROI: 10.25,
-      totalMaxROI: 19,
+      capability: "Data Integration",
+      description: "Automate data stream harmonization",
+      value: 625000, // $500K-$750K average
     },
     {
-      gmv: "$250M",
-      gmvValue: 250000000,
-      directSavingsMin: 5625000,
-      directSavingsMax: 11250000,
-      gmvUpliftMin: 20000000,
-      gmvUpliftMax: 36250000,
-      totalMinROI: 10.25,
-      totalMaxROI: 19,
-    },
-    {
-      gmv: "$500M",
-      gmvValue: 500000000,
-      directSavingsMin: 11250000,
-      directSavingsMax: 22500000,
-      gmvUpliftMin: 40000000,
-      gmvUpliftMax: 72500000,
-      totalMinROI: 10.25,
-      totalMaxROI: 19,
+      capability: "Analyst Reduction",
+      description: "Free up analyst capacity through automation",
+      value: 600000,
     },
   ];
 
-  // Savings data
-  const savingsData: CapabilityData[] = [
+  const decisionUpliftData: CapabilityData[] = [
     {
-      capability: "Return Reduction",
-      description: "Better product attribution → fewer wrong orders",
-      min: 75000,
-      max: 150000,
-      average: 112500,
+      capability: "Risk Protection",
+      description: "Early warning signals for underperforming assets",
+      value: 5000000,
     },
     {
-      capability: "Operational Efficiency",
-      description: "Less time spent on BI/reporting",
-      min: 50000,
-      max: 100000,
-      average: 75000,
+      capability: "Strategic Insights",
+      description: "Identify market shifts months before competitors",
+      value: 2000000,
     },
     {
-      capability: "Market Research Spend",
-      description: "Replacing external research/consulting",
-      min: 50000,
-      max: 100000,
-      average: 75000,
+      capability: "Deal Visibility",
+      description: "Improve target screening and avoid missed deals",
+      value: 1200000, // Using $1.2M for $1M+
     },
     {
-      capability: "Inventory Inefficiency",
-      description: "Avoid overstocking wrong SKUs",
-      min: 50000,
-      max: 100000,
-      average: 75000,
+      capability: "Regulatory Alerts",
+      description: "Proactive strategy adjustment for regulatory changes",
+      value: 750000, // $500K-$1M average
+    },
+    {
+      capability: "Competitor Analytics",
+      description: "Identify market headwinds and competitor strategy",
+      value: 450000, // $300K-$600K average
     },
   ];
 
-  // Uplift data
-  const upliftData: CapabilityData[] = [
-    {
-      capability: "Gap Discovery",
-      description: "New SKUs & categories discovered",
-      min: 300000,
-      max: 500000,
-      average: 400000,
-    },
-    {
-      capability: "Conversion Lift",
-      description: "Better PDPs, related SKUs, enriched data",
-      min: 200000,
-      max: 300000,
-      average: 250000,
-    },
-    {
-      capability: "Smarter Pricing",
-      description: "Higher competitiveness, margin-sensitive pricing",
-      min: 200000,
-      max: 400000,
-      average: 300000,
-    },
-    {
-      capability: "Trend Anticipation",
-      description: "First-mover advantage in fast-growing segments",
-      min: 100000,
-      max: 250000,
-      average: 175000,
-    },
-  ];
+  // Calculate totals
+  const totalDirectSavings = directSavingsData.reduce(
+    (sum, item) => sum + item.value,
+    0
+  );
+  const totalDecisionUplift = decisionUpliftData.reduce(
+    (sum, item) => sum + item.value,
+    0
+  );
+  const totalImpact = totalDirectSavings + totalDecisionUplift;
+  const roiPercentage = (totalImpact / 100000000) * 100; // Against $100M AUM
 
   // Helper function to format currency values
   const formatCurrency = (value: number): string => {
@@ -334,56 +260,28 @@ const GikaDashboard: React.FC = () => {
     }
   };
 
-  // Get selected GMV data
-  const selectedGMVData = gmvData.find((item) => item.gmv === selectedGMV)!;
-
   // Data for impact breakdown pie chart
-  const directSavingsAvg =
-    (selectedGMVData.directSavingsMin + selectedGMVData.directSavingsMax) / 2;
-  const upliftAvg =
-    (selectedGMVData.gmvUpliftMin + selectedGMVData.gmvUpliftMax) / 2;
-  const totalAvgValue = directSavingsAvg + upliftAvg;
-
   const impactBreakdownData: ImpactBreakdownData[] = [
     {
       name: "Direct Savings",
-      value: directSavingsAvg,
-      percentage: Math.round((directSavingsAvg / totalAvgValue) * 100),
+      value: totalDirectSavings,
+      percentage: Math.round((totalDirectSavings / totalImpact) * 100),
     },
     {
-      name: "GMV Uplift",
-      value: upliftAvg,
-      percentage: Math.round((upliftAvg / totalAvgValue) * 100),
+      name: "Decision Enhancement",
+      value: totalDecisionUplift,
+      percentage: Math.round((totalDecisionUplift / totalImpact) * 100),
     },
   ];
 
-  // Scale factors for visualizing savings and uplift values
-  const savingsMultiplier = selectedGMVData.gmvValue / 10000000; // Base scale from $10M
-  const scaledSavingsData: ScaledCapabilityData[] = savingsData
-    .map((item) => ({
-      ...item,
-      scaledAverage: item.average * savingsMultiplier,
-    }))
-    .sort((a, b) => b.scaledAverage - a.scaledAverage);
-
-  const scaledUpliftData: ScaledCapabilityData[] = upliftData
-    .map((item) => ({
-      ...item,
-      scaledAverage: item.average * savingsMultiplier,
-    }))
-    .sort((a, b) => b.scaledAverage - a.scaledAverage);
-
-  // Data for the total impact by GMV chart
-  const totalImpactByGMVData: TotalImpactData[] = gmvData.map((item) => {
-    const minTotal = item.directSavingsMin + item.gmvUpliftMin;
-    const maxTotal = item.directSavingsMax + item.gmvUpliftMax;
-    return {
-      gmv: item.gmv,
-      "Direct Savings": (item.directSavingsMin + item.directSavingsMax) / 2,
-      "GMV Uplift": (item.gmvUpliftMin + item.gmvUpliftMax) / 2,
-      "Total Impact": (minTotal + maxTotal) / 2,
-    };
-  });
+  // Data for category comparison
+  const categoryComparisonData: CategoryComparisonData[] = [
+    {
+      category: "Investment Impact",
+      "Direct Savings": totalDirectSavings,
+      "Decision Enhancement": totalDecisionUplift,
+    },
+  ];
 
   // Custom tooltip for currency formatting
   const CustomTooltip: React.FC<CustomTooltipProps> = ({
@@ -406,7 +304,7 @@ const GikaDashboard: React.FC = () => {
     return null;
   };
 
-  // Custom active shape for pie charts
+  // Custom active shape for pie charts - no central text
   const renderActiveShape = (props: any) => {
     const {
       cx,
@@ -424,26 +322,6 @@ const GikaDashboard: React.FC = () => {
 
     return (
       <g>
-        <text
-          x={cx}
-          y={cy}
-          dy={-4}
-          textAnchor="middle"
-          fill="#333"
-          className="text-[10px] sm:text-xs"
-        >
-          {payload.name}
-        </text>
-        <text
-          x={cx}
-          y={cy}
-          dy={15}
-          textAnchor="middle"
-          fill="#333"
-          className="text-xs sm:text-sm font-medium"
-        >
-          {payload.percentage}%
-        </text>
         <Sector
           cx={cx}
           cy={cy}
@@ -467,41 +345,21 @@ const GikaDashboard: React.FC = () => {
   };
 
   // Colors for charts
-  const COLORS = [
-    "#8B5CF6",
-    "#10B981",
-    "#F59E0B",
-    "#EC4899",
-    "#3B82F6",
-    "#EF4444",
-  ];
   const IMPACT_COLORS = ["#10B981", "#3B82F6"];
   const SAVINGS_COLORS = ["#059669", "#10B981", "#34D399", "#6EE7B7"];
-  const UPLIFT_COLORS = ["#2563EB", "#3B82F6", "#60A5FA", "#93C5FD"];
+  const UPLIFT_COLORS = ["#1D4ED8", "#2563EB", "#3B82F6", "#60A5FA", "#93C5FD"];
 
   return (
     <div className="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Header & Logo */}
+      {/* Header */}
       <div className="flex justify-between items-center mb-4 sm:mb-6">
-        <div className="flex items-center bg-white p-0.5 sm:p-1 rounded-lg shadow-md border border-gray-200">
-          <span className="text-[10px] sm:text-xs lg:text-sm font-extrabold text-gray-700 mr-1 sm:mr-2 ml-1 sm:ml-2">
-            GMV
-          </span>
-          <div className="flex flex-wrap sm:flex-nowrap">
-            {gmvData.map((item) => (
-              <button
-                key={item.gmv}
-                onClick={() => setSelectedGMV(item.gmv)}
-                className={`px-1.5 sm:px-2 lg:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs lg:text-sm rounded-md transition-all duration-200 mx-0.5 ${
-                  selectedGMV === item.gmv
-                    ? "bg-gradient-to-r from-[#671D78] to-[#2E2680] text-white font-medium shadow-md"
-                    : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                }`}
-              >
-                {item.gmv}
-              </button>
-            ))}
-          </div>
+        <div className="bg-white p-2 sm:p-3 rounded-lg shadow-md border border-gray-200">
+          <h1 className="text-sm sm:text-lg lg:text-xl font-extrabold text-gray-700">
+            GiKA Investment Platform ROI Analysis
+          </h1>
+          <p className="text-xs sm:text-sm text-gray-600 mt-1">
+            Annual Impact per $100M AUM
+          </p>
         </div>
       </div>
 
@@ -516,7 +374,7 @@ const GikaDashboard: React.FC = () => {
               </p>
               <div className="flex flex-col sm:flex-row sm:items-baseline">
                 <span className="text-base sm:text-lg lg:text-2xl font-bold text-[#2E2680]/80">
-                  {formatCurrency(totalAvgValue)}
+                  {formatCurrency(totalImpact)}
                 </span>
                 <span className="text-[10px] sm:text-xs lg:text-sm sm:ml-1 font-semibold text-gray-700">
                   per year
@@ -533,7 +391,7 @@ const GikaDashboard: React.FC = () => {
               </p>
               <div className="flex flex-col sm:flex-row sm:items-baseline">
                 <span className="text-base sm:text-lg lg:text-2xl font-bold text-[#421F7E]/80">
-                  {formatCurrency(directSavingsAvg)}
+                  {formatCurrency(totalDirectSavings)}
                 </span>
                 <span className="text-[10px] sm:text-xs lg:text-sm sm:ml-1 font-semibold text-gray-700">
                   per year
@@ -546,11 +404,11 @@ const GikaDashboard: React.FC = () => {
             <div className="absolute w-1 sm:w-1.5 h-full bg-[#56197B]/80 left-0 top-0"></div>
             <div className="ml-1.5 sm:ml-2">
               <p className="text-[10px] sm:text-xs lg:text-sm font-bold text-gray-700 uppercase tracking-wider mb-0.5 sm:mb-1">
-                GMV Uplift
+                Decision Enhancement
               </p>
               <div className="flex flex-col sm:flex-row sm:items-baseline">
                 <span className="text-base sm:text-lg lg:text-2xl font-bold text-[#56197B]/80">
-                  {formatCurrency(upliftAvg)}
+                  {formatCurrency(totalDecisionUplift)}
                 </span>
                 <span className="text-[10px] sm:text-xs lg:text-sm sm:ml-1 font-semibold text-gray-700">
                   per year
@@ -567,12 +425,7 @@ const GikaDashboard: React.FC = () => {
               </p>
               <div className="flex items-baseline">
                 <span className="text-base sm:text-lg lg:text-2xl font-bold text-[#671D78]/80">
-                  {(
-                    (selectedGMVData.totalMinROI +
-                      selectedGMVData.totalMaxROI) /
-                    2
-                  ).toFixed(1)}
-                  %
+                  {roiPercentage.toFixed(1)}%
                 </span>
               </div>
             </div>
@@ -596,8 +449,8 @@ const GikaDashboard: React.FC = () => {
                   data={impactBreakdownData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={40}
-                  outerRadius={60}
+                  innerRadius={30}
+                  outerRadius={50}
                   fill="#8884d8"
                   dataKey="value"
                   onMouseEnter={(_, index) => setActiveIndex(index)}
@@ -616,18 +469,23 @@ const GikaDashboard: React.FC = () => {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-2 sm:mt-3 grid grid-cols-2 gap-1 sm:gap-2">
+          <div className="mt-2 sm:mt-3 flex flex-col gap-2">
             {impactBreakdownData.map((item, index) => (
-              <div key={index} className="flex items-center">
-                <div
-                  className="w-2 h-2 sm:w-3 sm:h-3 rounded-full"
-                  style={{
-                    backgroundColor:
-                      IMPACT_COLORS[index % IMPACT_COLORS.length],
-                  }}
-                ></div>
-                <span className="ml-1 text-[10px] sm:text-xs font-medium">
-                  {item.name}
+              <div key={index} className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div
+                    className="w-3 h-3 rounded-full mr-2"
+                    style={{
+                      backgroundColor:
+                        IMPACT_COLORS[index % IMPACT_COLORS.length],
+                    }}
+                  ></div>
+                  <span className="text-[10px] sm:text-xs font-medium">
+                    {item.name}
+                  </span>
+                </div>
+                <span className="text-[10px] sm:text-xs font-bold text-gray-600">
+                  {item.percentage}%
                 </span>
               </div>
             ))}
@@ -645,9 +503,9 @@ const GikaDashboard: React.FC = () => {
           <div className="h-48 sm:h-56 lg:h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={scaledSavingsData}
+                data={directSavingsData}
                 layout="vertical"
-                margin={{ top: 5, right: 20, left: 15, bottom: 5 }}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                 barGap={50}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -660,19 +518,20 @@ const GikaDashboard: React.FC = () => {
                 <YAxis
                   type="category"
                   dataKey="capability"
-                  width={80}
-                  tick={{ fontSize: 11, fontWeight: "500" }}
+                  width={90}
+                  tick={{ fontSize: 9, fontWeight: "500" }}
                   stroke="#000"
+                  interval={0}
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Bar
-                  dataKey="scaledAverage"
+                  dataKey="value"
                   radius={[0, 4, 4, 0]}
                   animationBegin={isSavingsChartVisible ? 0 : 100000}
                   animationDuration={2000}
                   isAnimationActive={isSavingsChartVisible}
                 >
-                  {scaledSavingsData.map((entry, index) => (
+                  {directSavingsData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={SAVINGS_COLORS[index % SAVINGS_COLORS.length]}
@@ -684,20 +543,20 @@ const GikaDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* GMV Uplift Breakdown */}
+        {/* Decision Enhancement Breakdown */}
         <div
           ref={upliftChartRef}
           className="col-span-12 lg:col-span-5 bg-white p-2 sm:p-3 lg:p-4 rounded-xl shadow-md border border-gray-200"
         >
           <h2 className="text-xs sm:text-sm lg:text-md font-bold text-gray-700 mb-2 sm:mb-3">
-            GMV Uplift Breakdown
+            Decision Enhancement Breakdown
           </h2>
           <div className="h-48 sm:h-56 lg:h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={scaledUpliftData}
+                data={decisionUpliftData}
                 layout="vertical"
-                margin={{ top: 5, right: 20, left: 15, bottom: 5 }}
+                margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
                 barGap={50}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -710,19 +569,20 @@ const GikaDashboard: React.FC = () => {
                 <YAxis
                   type="category"
                   dataKey="capability"
-                  width={80}
-                  tick={{ fontSize: 11, fontWeight: "500" }}
+                  width={110}
+                  tick={{ fontSize: 9, fontWeight: "500" }}
                   stroke="#000"
+                  interval={0}
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Bar
-                  dataKey="scaledAverage"
+                  dataKey="value"
                   radius={[0, 4, 4, 0]}
                   animationBegin={isUpliftChartVisible ? 0 : 100000}
                   animationDuration={2000}
                   isAnimationActive={isUpliftChartVisible}
                 >
-                  {scaledUpliftData.map((entry, index) => (
+                  {decisionUpliftData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={UPLIFT_COLORS[index % UPLIFT_COLORS.length]}
@@ -734,22 +594,26 @@ const GikaDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Total Impact by GMV */}
+        {/* Category Comparison */}
         <div
-          ref={totalImpactChartRef}
+          ref={categoryComparisonRef}
           className="col-span-12 md:col-span-6 bg-white p-2 sm:p-3 lg:p-4 rounded-xl shadow-md border border-gray-200"
         >
           <h2 className="text-xs sm:text-sm lg:text-md font-bold text-gray-700 mb-2 sm:mb-3">
-            Total Impact by GMV
+            Impact Categories Comparison
           </h2>
           <div className="h-40 sm:h-48">
             <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart
-                data={totalImpactByGMVData}
+              <BarChart
+                data={categoryComparisonData}
                 margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="gmv" stroke="#000" tick={{ fontSize: 10 }} />
+                <XAxis
+                  dataKey="category"
+                  stroke="#000"
+                  tick={{ fontSize: 10 }}
+                />
                 <YAxis
                   tickFormatter={formatCurrency}
                   stroke="#000"
@@ -764,53 +628,30 @@ const GikaDashboard: React.FC = () => {
                 <Bar
                   dataKey="Direct Savings"
                   fill="#10B981"
-                  stackId="a"
                   radius={[4, 4, 0, 0]}
-                  animationBegin={isTotalImpactChartVisible ? 0 : 100000}
+                  animationBegin={isCategoryComparisonVisible ? 0 : 100000}
                   animationDuration={1000}
-                  isAnimationActive={isTotalImpactChartVisible}
+                  isAnimationActive={isCategoryComparisonVisible}
                 />
                 <Bar
-                  dataKey="GMV Uplift"
+                  dataKey="Decision Enhancement"
                   fill="#3B82F6"
-                  stackId="a"
                   radius={[4, 4, 0, 0]}
-                  animationBegin={isTotalImpactChartVisible ? 1000 : 100000}
+                  animationBegin={isCategoryComparisonVisible ? 500 : 100000}
                   animationDuration={1000}
-                  isAnimationActive={isTotalImpactChartVisible}
+                  isAnimationActive={isCategoryComparisonVisible}
                 />
-                <Line
-                  type="monotone"
-                  dataKey="Total Impact"
-                  stroke="#8B5CF6"
-                  strokeWidth={2}
-                  dot={{
-                    stroke: "#8B5CF6",
-                    strokeWidth: 2,
-                    r: 3,
-                    fill: "white",
-                  }}
-                  activeDot={{
-                    stroke: "#8B5CF6",
-                    strokeWidth: 2,
-                    r: 5,
-                    fill: "white",
-                  }}
-                  animationBegin={isTotalImpactChartVisible ? 0 : 100000}
-                  animationDuration={2000}
-                  isAnimationActive={isTotalImpactChartVisible}
-                />
-              </ComposedChart>
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        {/* Key Value Proposition - Made Fully Responsive */}
+        {/* Key Value Proposition */}
         <div
           ref={keyPropositionRef}
           className="col-span-12 md:col-span-6 p-2 sm:p-3 lg:p-4 rounded-xl overflow-hidden shadow-lg text-white relative"
         >
-          {/* Gradient background replacing the image */}
+          {/* Gradient background */}
           <div className="absolute inset-0 brightness-150 bg-gradient-to-r from-[#671D78] to-[#2E2680] z-0"></div>
           <h2 className="text-sm sm:text-base lg:text-xl font-bold mb-2 sm:mb-3 flex items-center relative z-10">
             <svg
@@ -854,11 +695,11 @@ const GikaDashboard: React.FC = () => {
                   </svg>
                 </div>
                 <h3 className="text-xs sm:text-sm lg:text-lg font-semibold ml-1 sm:ml-1.5 lg:ml-2">
-                  Consistent ROI
+                  Strong ROI
                 </h3>
               </div>
               <p className="text-[10px] sm:text-xs lg:text-md leading-relaxed">
-                10-19% ROI across all GMV ranges
+                11.6% annual return on AUM
               </p>
             </div>
             <div
@@ -885,11 +726,11 @@ const GikaDashboard: React.FC = () => {
                   </svg>
                 </div>
                 <h3 className="text-xs sm:text-sm lg:text-lg font-semibold ml-1 sm:ml-1.5 lg:ml-2">
-                  3.7x Multiplier
+                  2.6x Multiplier
                 </h3>
               </div>
               <p className="text-[10px] sm:text-xs lg:text-md leading-relaxed">
-                $1 in savings = $3.7 in GMV uplift
+                $1 in savings = $2.6 in decision value
               </p>
             </div>
             <div
@@ -911,16 +752,16 @@ const GikaDashboard: React.FC = () => {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
                 </div>
                 <h3 className="text-xs sm:text-sm lg:text-lg font-semibold ml-1 sm:ml-1.5 lg:ml-2">
-                  Full Scalability
+                  Risk Protection
                 </h3>
               </div>
               <p className="text-[10px] sm:text-xs lg:text-md leading-relaxed">
-                Benefits scale linearly with GMV
+                Early warning system for portfolio risks
               </p>
             </div>
           </div>
