@@ -695,11 +695,11 @@ const GikaDashboard: React.FC = () => {
                   </svg>
                 </div>
                 <h3 className="text-xs sm:text-sm lg:text-lg font-semibold ml-1 sm:ml-1.5 lg:ml-2">
-                  Strong ROI
+                  Strategic Foresight
                 </h3>
               </div>
               <p className="text-[10px] sm:text-xs lg:text-md leading-relaxed">
-                11.6% annual return on AUM
+                Proactive Intelligence Across Compliance, Competition, and Market Shifts
               </p>
             </div>
             <div
@@ -726,11 +726,11 @@ const GikaDashboard: React.FC = () => {
                   </svg>
                 </div>
                 <h3 className="text-xs sm:text-sm lg:text-lg font-semibold ml-1 sm:ml-1.5 lg:ml-2">
-                  2.6x Multiplier
+                  From chaos to clarity
                 </h3>
               </div>
               <p className="text-[10px] sm:text-xs lg:text-md leading-relaxed">
-                $1 in savings = $2.6 in decision value
+                The AI that sees the whole picture — before anyone else does.
               </p>
             </div>
             <div
@@ -757,11 +757,11 @@ const GikaDashboard: React.FC = () => {
                   </svg>
                 </div>
                 <h3 className="text-xs sm:text-sm lg:text-lg font-semibold ml-1 sm:ml-1.5 lg:ml-2">
-                  Risk Protection
+                  Strong ROI
                 </h3>
               </div>
               <p className="text-[10px] sm:text-xs lg:text-md leading-relaxed">
-                Early warning system for portfolio risks
+                GiKA pays for itself — and then multiplies your returns by 20×
               </p>
             </div>
           </div>
