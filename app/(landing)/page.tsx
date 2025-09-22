@@ -648,8 +648,9 @@ const HeroSection: React.FC = () => {
           AI That Truly Understands Your Business
         </h1>
         <p className="text-base sm:text-lg text-center text-black font-[350] mb-6 md:mb-8 max-w-[90%] sm:max-w-[85%] md:max-w-[80%] px-4">
-          Transform fragmented data into grounded, actionable insights with our
-          specialized AI platform built on small language models.
+          World’s most intelligent decision agent — redefining the
+          decision-making process for — investments, portfolios management, market,
+          competition, and customer risk.
         </p>
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 px-4">
           <PrimaryButton
@@ -773,8 +774,8 @@ const ProblemSolutionSection: React.FC = () => {
       >
         <div className="container mx-auto px-6 z-10 relative">
           <SectionHeader
-            title="Purpose-Driven AI, Tailored for You"
-            subtitle="Engineered for enterprise-scale performance, our platform addresses critical AI limitations and unifies fragmented data into actionable, domain-specific intelligence."
+            title="Purpose-Driven AI, Tailored for Your Business"
+            subtitle="Engineered for enterprise-scale performance, our platform transforms fragmented data into grounded, actionable insights with our specialized AI platform built on small language models."
             light={true}
           />
 

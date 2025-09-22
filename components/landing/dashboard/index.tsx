@@ -421,11 +421,11 @@ const GikaDashboard: React.FC = () => {
             <div className="absolute w-1 sm:w-1.5 h-full bg-[#671D78]/80 left-0 top-0"></div>
             <div className="ml-1.5 sm:ml-2">
               <p className="text-[10px] sm:text-xs lg:text-sm font-bold text-gray-700 uppercase tracking-wider mb-0.5 sm:mb-1">
-                Return on Investment
+                Return on Direct Savings
               </p>
               <div className="flex items-baseline">
                 <span className="text-base sm:text-lg lg:text-2xl font-bold text-[#671D78]/80">
-                  {roiPercentage.toFixed(1)}%
+                  15x - 50x
                 </span>
               </div>
             </div>
