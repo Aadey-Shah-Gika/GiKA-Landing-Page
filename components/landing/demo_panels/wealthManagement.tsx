@@ -100,7 +100,7 @@ const AssetManagementDemo = () => {
   const [showSection, setShowSection] = useState({
     marketInsights: false,
     audienceSegmentation: false,
-    userPreferences: false,
+    timeline: false,
     recommendations: false,
   });
   const [showConfetti, setShowConfetti] = useState(false);
@@ -225,7 +225,7 @@ const AssetManagementDemo = () => {
 
     setStage(1);
     setInputValue(
-      "How can we launch a new online course in Artificial Intelligence that resonates with our target audience and maximizes enrollments?"
+      "Given Sarah Mitchell's (Client ID: SM-2847) portfolio, current macro conditions, and historical performance data, what type of rebalancing or product move would minimize downside risk without breaching her risk profile?"
     );
 
     setTimeout(() => {
@@ -267,7 +267,7 @@ const AssetManagementDemo = () => {
     }, 3500);
 
     setTimeout(() => {
-      setShowSection((prev) => ({ ...prev, userPreferences: true }));
+      setShowSection((prev) => ({ ...prev, timeline: true }));
       if (dashboardContainerRef.current) {
         dashboardContainerRef.current.scrollTop =
           dashboardContainerRef.current.scrollHeight;
@@ -318,7 +318,7 @@ const AssetManagementDemo = () => {
     setShowSection({
       marketInsights: false,
       audienceSegmentation: false,
-      userPreferences: false,
+      timeline: false,
       recommendations: false,
     });
     setShowConfetti(false);
@@ -359,9 +359,9 @@ const AssetManagementDemo = () => {
   ];
 
   const conversionData = [
-    { type: "Career Progression", likelihood: 35, fill: "#8B5CF6" },
-    { type: "Certification", likelihood: 28, fill: "#6366F1" },
-    { type: "Knowledge Only", likelihood: 15, fill: "#3B82F6" },
+    { type: "Current Portfolio", likelihood: 180, fill: "#8B5CF6" },
+    { type: "Rebalanced Portfolio", likelihood: 420, fill: "#10B981" },
+    { type: "Target (Year 3)", likelihood: 520, fill: "#6366F1" },
   ];
 
   const preferenceData = [
@@ -400,17 +400,17 @@ const AssetManagementDemo = () => {
   };
 
   // Typing animation text
-  const fullText = `For a successful launch of the new AI course, we recommend leveraging GiKA's enriched data to understand potential student needs and market demand.
+  const fullText = `Based on Sarah Mitchell's portfolio analysis and GiKA's enriched market intelligence, we recommend a strategic rebalancing approach.
 
-Market Insights:
-* Recent course interest trends show a 25% increase in AI learning among professionals aged 25–40 in tech and healthcare sectors.
-* Feedback analysis indicates a strong preference for project-based learning and industry-relevant case studies within AI courses.
+Client Profile Insights:
+* Sarah (age 58, tech sector executive) holds a $12.8M portfolio with 72% equity concentration, including $4.2M in employer stock (NVDA) acquired pre-IPO.
+* Her historical trading patterns reveal a conservative risk tolerance, despite aggressive current allocation—likely due to inertia from appreciated positions.
 
-Target Audience Segmentation:
-* Users with an interest in career progression or certification programs are 35% more likely to convert.
-* Students from specific regions (e.g., California, London) are asking for flexible payment options and localized course content.
+Market & Risk Analysis:
+* Current macro conditions (elevated rates, tech sector volatility) expose her portfolio to 28% downside risk in a correction scenario.
+* Her risk profile assessment indicates a maximum 15% downside tolerance, creating a 13% breach risk under current allocation.
 
-Recommendation: Launch a tailored course offering with project-based learning modules, regional pricing, and career-focused certifications to align with key user preferences, increasing potential enrollments by 20–25%.`;
+Recommendation: Implement a systematic rebalancing by reducing equity exposure to 55%, trimming concentrated NVDA position by 40%, and rotating into diversified fixed income (20%) and alternative assets (25%), protecting wealth while maintaining growth potential aligned with her true risk tolerance.`;
 
   // Main container classes based on responsive settings
   const mainContainerClasses = `
@@ -446,7 +446,7 @@ Recommendation: Launch a tailored course offering with project-based learning mo
               <div className="w-3 h-3 rounded-full bg-green-400"></div>
             </div>
             <div className="text-xs font-medium text-gray-700 hidden sm:block">
-              GiKA Education Insights
+              GiKA Wealth Management
             </div>
             <div className="text-xs font-medium text-gray-700 sm:hidden">
               GiKA
@@ -522,9 +522,9 @@ Recommendation: Launch a tailored course offering with project-based learning mo
 
               <div className="flex justify-center mb-6">
                 <div className="text-sm text-center text-gray-600 max-w-[85%]">
-                  Welcome to GiKA Education Insights. Ask me about course
-                  development, student engagement, or marketing strategies for
-                  your educational offerings.
+                  Welcome to GiKA Wealth Management Intelligence. Ask me about
+                  portfolio analysis, risk assessment, or investment strategies
+                  for your clients.
                 </div>
               </div>
 
@@ -564,62 +564,58 @@ Recommendation: Launch a tailored course offering with project-based learning mo
                     {typingComplete ? (
                       <div>
                         <p className="font-medium">
-                          For a successful launch of the new AI course, we
-                          recommend leveraging GiKA's enriched data to
-                          understand potential student needs and market demand.
+                          Based on Sarah Mitchell's portfolio analysis and
+                          GiKA's enriched market intelligence, we recommend a
+                          strategic rebalancing approach.
                         </p>
 
                         <p className="mt-4 font-medium text-indigo-800">
-                          Market Insights:
+                          Client Profile Insights:
                         </p>
                         <ul className="list-disc pl-5 mt-1 space-y-1">
                           <li>
-                            Recent course interest trends show a{" "}
+                            Sarah (age 58, tech sector executive) holds a{" "}
                             <span className="font-semibold text-indigo-700">
-                              25% increase in AI learning
+                              $12.8M portfolio
                             </span>{" "}
-                            among professionals aged 25–40 in tech and
-                            healthcare sectors.
+                            with 72% equity concentration, including{" "}
+                            <span className="font-semibold text-indigo-700">
+                              $4.2M in employer stock (NVDA)
+                            </span>{" "}
+                            acquired pre-IPO.
                           </li>
                           <li>
-                            Feedback analysis indicates a strong preference for{" "}
+                            Her historical trading patterns reveal a{" "}
                             <span className="font-semibold text-indigo-700">
-                              project-based learning
-                            </span>{" "}
-                            and{" "}
-                            <span className="font-semibold text-indigo-700">
-                              industry-relevant case studies
-                            </span>{" "}
-                            within AI courses.
+                              conservative risk tolerance
+                            </span>
+                            , despite aggressive current allocation—likely due
+                            to inertia from appreciated positions.
                           </li>
                         </ul>
 
                         <p className="mt-4 font-medium text-indigo-800">
-                          Target Audience Segmentation:
+                          Market & Risk Analysis:
                         </p>
                         <ul className="list-disc pl-5 mt-1 space-y-1">
                           <li>
-                            Users with an interest in{" "}
+                            Current macro conditions (elevated rates, tech
+                            sector volatility) expose her portfolio to{" "}
                             <span className="font-semibold text-indigo-700">
-                              career progression
+                              28% downside risk
                             </span>{" "}
-                            or{" "}
-                            <span className="font-semibold text-indigo-700">
-                              certification programs
-                            </span>{" "}
-                            are 35% more likely to convert.
+                            in a correction scenario.
                           </li>
                           <li>
-                            Students from specific regions (e.g., California,
-                            London) are asking for{" "}
+                            Her risk profile assessment indicates a maximum{" "}
                             <span className="font-semibold text-indigo-700">
-                              flexible payment options
-                            </span>{" "}
-                            and{" "}
-                            <span className="font-semibold text-indigo-700">
-                              localized course content
+                              15% downside tolerance
                             </span>
-                            .
+                            , creating a{" "}
+                            <span className="font-semibold text-indigo-700">
+                              13% breach risk
+                            </span>{" "}
+                            under current allocation.
                           </li>
                         </ul>
 
@@ -627,24 +623,25 @@ Recommendation: Launch a tailored course offering with project-based learning mo
                           <span className="font-medium text-indigo-800">
                             Recommendation:
                           </span>{" "}
-                          Launch a tailored course offering with{" "}
+                          Implement a systematic rebalancing by reducing equity
+                          exposure to{" "}
                           <span className="font-semibold text-indigo-700">
-                            project-based learning modules
+                            55%
                           </span>
-                          ,{" "}
+                          , trimming concentrated NVDA position by{" "}
                           <span className="font-semibold text-indigo-700">
-                            regional pricing
+                            40%
                           </span>
-                          , and{" "}
+                          , and rotating into diversified{" "}
                           <span className="font-semibold text-indigo-700">
-                            career-focused certifications
+                            fixed income (20%)
                           </span>{" "}
-                          to align with key user preferences, increasing
-                          potential enrollments by{" "}
+                          and{" "}
                           <span className="font-semibold text-indigo-700">
-                            20–25%
+                            alternative assets (25%)
                           </span>
-                          .
+                          , protecting wealth while maintaining growth potential
+                          aligned with her true risk tolerance.
                         </p>
 
                         <div className="mt-4 flex justify-center">
@@ -672,7 +669,7 @@ Recommendation: Launch a tailored course offering with project-based learning mo
             <div className="flex items-center">
               <input
                 type="text"
-                placeholder="Ask a question about your education offerings..."
+                placeholder="Ask about client portfolios, risk analysis, or rebalancing strategies..."
                 className="flex-grow border border-gray-200 rounded-lg px-3 py-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
@@ -711,7 +708,7 @@ Recommendation: Launch a tailored course offering with project-based learning mo
               <div className="border-b border-gray-200 p-3 sm:p-4 bg-white/50 backdrop-blur-sm flex items-center mt-12">
                 <div className="flex items-center">
                   <div className="text-xs font-medium text-gray-700">
-                    AI Course Launch Analysis
+                    Portfolio Risk Analysis - Sarah Mitchell
                   </div>
                 </div>
                 <div className="ml-auto flex items-center">
@@ -755,7 +752,7 @@ Recommendation: Launch a tailored course offering with project-based learning mo
                         <span className="bg-indigo-100 rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center mr-2">
                           <TrendingUp className="h-2 w-2 sm:h-3 sm:w-3 text-indigo-700" />
                         </span>
-                        AI Learning Interest Trends
+                        Portfolio Downside Risk Exposure
                       </h3>
 
                       <div className="h-40 sm:h-52">
@@ -811,12 +808,12 @@ Recommendation: Launch a tailored course offering with project-based learning mo
                         <div className="font-medium text-gray-700 flex items-center">
                           <span className="inline-block w-2 h-2 bg-indigo-600 rounded-full mr-1"></span>
                           <span className="text-indigo-600 mr-2">
-                            <CountUp end={25} duration={4} />%
+                            <CountUp end={28} duration={4} />%
                           </span>
-                          <span>{" increase in AI course interest"}</span>
+                          <span>{" downside risk in correction scenario"}</span>
                         </div>
                         <div className="text-gray-500">
-                          Primary: 25-40 years old
+                          Risk Tolerance: 15% max
                         </div>
                       </div>
                     </motion.div>
@@ -834,13 +831,13 @@ Recommendation: Launch a tailored course offering with project-based learning mo
                         <span className="bg-indigo-100 rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center mr-2">
                           <Users className="h-2 w-2 sm:h-3 sm:w-3 text-indigo-700" />
                         </span>
-                        Target Audience Segmentation
+                        Current Portfolio Allocation
                       </h3>
 
                       <div className="grid grid-cols-1 gap-4 sm:gap-6">
                         <div>
                           <div className="text-xs font-medium text-gray-700 mb-2 text-center">
-                            Industry Breakdown
+                            Asset Class Distribution
                           </div>
                           <div className="h-36 sm:h-44">
                             <ResponsiveContainer width="100%" height="100%">
@@ -875,7 +872,7 @@ Recommendation: Launch a tailored course offering with project-based learning mo
 
                         <div>
                           <div className="text-xs font-medium text-gray-700 mb-2">
-                            Conversion Likelihood by Motivation
+                            Annual Income Generation Forecast
                           </div>
                           <div className="h-36 sm:h-44">
                             <ResponsiveContainer width="100%" height="100%">
@@ -896,8 +893,8 @@ Recommendation: Launch a tailored course offering with project-based learning mo
                                 />
                                 <XAxis
                                   type="number"
-                                  domain={[0, 40]}
-                                  tickFormatter={(value) => `${value}%`}
+                                  domain={[0, 600]}
+                                  tickFormatter={(value) => `$${value}K`}
                                   tick={{ fontSize: 8 }}
                                 />
                                 <YAxis
@@ -926,20 +923,20 @@ Recommendation: Launch a tailored course offering with project-based learning mo
                       </div>
 
                       <div className="mt-3 text-xs flex items-center justify-center">
-                        <div className="flex items-center px-2 py-1 bg-indigo-50 rounded">
-                          <span className="font-medium text-indigo-700">
-                            Key insight:
+                        <div className="flex items-center px-2 py-1 bg-green-50 rounded">
+                          <span className="font-medium text-green-700">
+                            Projected increase:
                           </span>
                           <span className="ml-1 text-gray-700">
-                            35% more likely to enroll
+                            +133% annual income after rebalancing
                           </span>
                         </div>
                       </div>
                     </motion.div>
                   )}
 
-                  {/* User Preferences section */}
-                  {showSection.userPreferences && (
+                  {/* Implementation Timeline section */}
+                  {showSection.timeline && (
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -949,55 +946,116 @@ Recommendation: Launch a tailored course offering with project-based learning mo
                       <h3 className="text-xs sm:text-sm font-semibold text-gray-700 mb-3 flex items-center">
                         <span className="bg-indigo-100 rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center mr-2">
                           <span className="text-xs font-bold text-indigo-700">
-                            ★
+                            ⏱
                           </span>
                         </span>
-                        Course Feature Preferences
+                        Rebalancing Implementation Timeline
                       </h3>
 
-                      <div className="space-y-3">
-                        {preferenceData.map((item, index) => (
-                          <div key={index}>
+                      <div className="space-y-4 relative pl-4">
+                        {/* Timeline vertical line */}
+                        <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-indigo-200"></div>
+
+                        {/* Phase 1 */}
+                        <motion.div
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, delay: 0.3 }}
+                          className="relative"
+                        >
+                          <div className="absolute left-[-16px] top-1 w-3 h-3 rounded-full bg-indigo-600 border-2 border-white"></div>
+                          <div className="bg-indigo-50 rounded-lg p-2">
                             <div className="flex items-center justify-between mb-1">
-                              <span className="text-xs font-medium text-gray-700">
-                                {item.feature}
+                              <span className="text-xs font-semibold text-indigo-800">
+                                Phase 1: Assessment & Planning
                               </span>
-                              <span className="text-xs font-semibold text-indigo-700">
-                                {item.preference}%
+                              <span className="text-[10px] text-gray-500 bg-white px-2 py-0.5 rounded">
+                                Weeks 1-2
                               </span>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <motion.div
-                                className="h-2 rounded-full"
-                                style={{ backgroundColor: item.fill }}
-                                initial={{ width: 0 }}
-                                animate={{ width: `${item.preference}%` }}
-                                transition={{
-                                  duration: 2,
-                                  delay: 0.5 + index * 0.2,
-                                }}
-                              ></motion.div>
-                            </div>
+                            <p className="text-xs text-gray-700">
+                              Complete tax analysis, identify tax-loss harvesting opportunities, review unrealized gains on NVDA position
+                            </p>
                           </div>
-                        ))}
+                        </motion.div>
+
+                        {/* Phase 2 */}
+                        <motion.div
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, delay: 0.6 }}
+                          className="relative"
+                        >
+                          <div className="absolute left-[-16px] top-1 w-3 h-3 rounded-full bg-indigo-600 border-2 border-white"></div>
+                          <div className="bg-indigo-50 rounded-lg p-2">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-xs font-semibold text-indigo-800">
+                                Phase 2: Initial Rebalancing
+                              </span>
+                              <span className="text-[10px] text-gray-500 bg-white px-2 py-0.5 rounded">
+                                Months 1-3
+                              </span>
+                            </div>
+                            <p className="text-xs text-gray-700">
+                              Begin systematic NVDA reduction (10-15%), initiate fixed income ladder with municipal bonds
+                            </p>
+                          </div>
+                        </motion.div>
+
+                        {/* Phase 3 */}
+                        <motion.div
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, delay: 0.9 }}
+                          className="relative"
+                        >
+                          <div className="absolute left-[-16px] top-1 w-3 h-3 rounded-full bg-indigo-600 border-2 border-white"></div>
+                          <div className="bg-indigo-50 rounded-lg p-2">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-xs font-semibold text-indigo-800">
+                                Phase 3: Alternative Allocation
+                              </span>
+                              <span className="text-[10px] text-gray-500 bg-white px-2 py-0.5 rounded">
+                                Months 4-8
+                              </span>
+                            </div>
+                            <p className="text-xs text-gray-700">
+                              Deploy capital to private equity, real estate funds, and hedge fund strategies
+                            </p>
+                          </div>
+                        </motion.div>
+
+                        {/* Phase 4 */}
+                        <motion.div
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, delay: 1.2 }}
+                          className="relative"
+                        >
+                          <div className="absolute left-[-16px] top-1 w-3 h-3 rounded-full bg-green-600 border-2 border-white"></div>
+                          <div className="bg-green-50 rounded-lg p-2">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-xs font-semibold text-green-800">
+                                Phase 4: Final Optimization
+                              </span>
+                              <span className="text-[10px] text-gray-500 bg-white px-2 py-0.5 rounded">
+                                Months 9-12
+                              </span>
+                            </div>
+                            <p className="text-xs text-gray-700">
+                              Complete NVDA trimming to target, review portfolio performance, adjust allocations
+                            </p>
+                          </div>
+                        </motion.div>
                       </div>
 
-                      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-600">
-                        <div className="bg-indigo-50 p-2 rounded">
-                          <span className="font-medium block text-indigo-700">
-                            Regional preferences
+                      <div className="mt-4 p-2 bg-gradient-to-r from-indigo-50 to-purple-50 rounded text-xs">
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium text-indigo-800">
+                            Total Implementation Period
                           </span>
-                          <span>
-                            California, London, Toronto show highest demand
-                          </span>
-                        </div>
-                        <div className="bg-indigo-50 p-2 rounded">
-                          <span className="font-medium block text-indigo-700">
-                            Payment options
-                          </span>
-                          <span>
-                            Flexible payments requested by 42% of potential
-                            students
+                          <span className="font-bold text-indigo-700">
+                            6-12 months
                           </span>
                         </div>
                       </div>
@@ -1020,63 +1078,66 @@ Recommendation: Launch a tailored course offering with project-based learning mo
                             ✓
                           </span>
                         </span>
-                        Course Launch Recommendations
+                        Portfolio Rebalancing Strategy
                       </h3>
 
                       <div className="space-y-3">
                         <div className="bg-white/60 rounded-lg p-3 backdrop-blur-sm">
                           <h4 className="text-xs font-semibold text-indigo-800 mb-1">
-                            Project-based Learning Modules
+                            Reduce Equity Concentration to 55%
                           </h4>
                           <p className="text-xs text-gray-700">
-                            Incorporate industry-relevant case studies and
-                            hands-on projects implementing AI solutions to
-                            real-world problems.
+                            Systematically trim NVDA position by 40% using
+                            tax-loss harvesting opportunities in other holdings
+                            to offset gains. Reduces single-stock risk while
+                            managing tax impact.
                           </p>
                           <div className="mt-1.5 flex items-center">
                             <div className="h-1 w-8 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-l-full"></div>
                             <div className="h-1 w-8 bg-gradient-to-r from-purple-400 to-blue-400"></div>
                             <div className="h-1 w-8 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-r-full"></div>
                             <div className="ml-2 text-[10px] text-gray-500">
-                              Est. Impact: High
+                              Priority: Critical
                             </div>
                           </div>
                         </div>
 
                         <div className="bg-white/60 rounded-lg p-3 backdrop-blur-sm">
                           <h4 className="text-xs font-semibold text-indigo-800 mb-1">
-                            Career-focused Certification Paths
+                            Allocate 20% to Fixed Income
                           </h4>
                           <p className="text-xs text-gray-700">
-                            Develop certification programs aligned with industry
-                            needs that highlight career advancement
-                            opportunities.
+                            Build diversified bond ladder with municipal and
+                            investment-grade corporate bonds. Current elevated
+                            rates provide attractive entry point for income
+                            generation.
                           </p>
                           <div className="mt-1.5 flex items-center">
                             <div className="h-1 w-8 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-l-full"></div>
                             <div className="h-1 w-8 bg-gradient-to-r from-purple-400 to-blue-400"></div>
                             <div className="h-1 w-8 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-r-full"></div>
                             <div className="ml-2 text-[10px] text-gray-500">
-                              Est. Impact: High
+                              Priority: High
                             </div>
                           </div>
                         </div>
 
                         <div className="bg-white/60 rounded-lg p-3 backdrop-blur-sm">
                           <h4 className="text-xs font-semibold text-indigo-800 mb-1">
-                            Regional Pricing & Content Strategy
+                            Diversify into Alternative Assets (25%)
                           </h4>
                           <p className="text-xs text-gray-700">
-                            Implement flexible payment options and localize
-                            content for high-demand regions like California and
-                            London.
+                            Allocate to private equity, real estate, and hedge
+                            funds to reduce correlation with public equities
+                            while maintaining growth potential suited to her
+                            profile.
                           </p>
                           <div className="mt-1.5 flex items-center">
                             <div className="h-1 w-8 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-l-full"></div>
                             <div className="h-1 w-8 bg-gradient-to-r from-purple-400 to-blue-400"></div>
                             <div className="h-1 w-8 bg-gray-300 rounded-r-full"></div>
                             <div className="ml-2 text-[10px] text-gray-500">
-                              Est. Impact: Medium
+                              Priority: Medium
                             </div>
                           </div>
                         </div>
@@ -1086,12 +1147,12 @@ Recommendation: Launch a tailored course offering with project-based learning mo
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
                           <div>
                             <div className="text-xs font-semibold text-indigo-800">
-                              Projected Enrollment Increase
+                              Downside Risk Reduction
                             </div>
                             <div className="mt-1 flex items-center">
                               <span className="text-lg sm:text-xl font-bold text-indigo-700">
-                                <CountUp end={20} duration={3} />-
-                                <CountUp end={25} duration={4} />%
+                                <CountUp end={28} duration={3} />% →
+                                <CountUp end={12} duration={4} />%
                               </span>
                               <span className="ml-2 text-xs text-green-600 flex items-center">
                                 <svg
@@ -1108,7 +1169,7 @@ Recommendation: Launch a tailored course offering with project-based learning mo
                                     d="M5 10l7-7m0 0l7 7m-7-7v18"
                                   ></path>
                                 </svg>
-                                vs. standard launch
+                                within risk tolerance
                               </span>
                             </div>
                           </div>
@@ -1117,7 +1178,7 @@ Recommendation: Launch a tailored course offering with project-based learning mo
                               Implementation Timeline
                             </div>
                             <div className="text-sm font-medium text-gray-700">
-                              8-10 weeks
+                              6-12 months
                             </div>
                           </div>
                         </div>
