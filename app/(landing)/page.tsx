@@ -30,10 +30,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Logo from "./logo.png";
 import GrainyFilm from "./grany-film.png";
 import GraphImage from "./graph.png";
-import TravelAnalysisDemo from "@/components/landing/demo_panels/travel";
-import EducationAnalysisDemoWithStyles from "@/components/landing/demo_panels/education";
-import FinancialAnalyticsDemoWithStyles from "@/components/landing/demo_panels/finance";
-import EcommerceExecutiveDemoWithStyles from "@/components/landing/demo_panels/retail";
+import CreditRiskDemo from "@/components/landing/demo_panels/creditRisk";
+import AssetManagementDemo from "@/components/landing/demo_panels/assetManagement";
+import WealthManagementDemo from "@/components/landing/demo_panels/wealthManagement";
+import PrivateEquityDemo from "@/components/landing/demo_panels/privateEquity";
 import GikaDashboard from "@/components/landing/dashboard";
 
 // Register the ScrollTrigger plugin
@@ -649,8 +649,8 @@ const HeroSection: React.FC = () => {
         </h1>
         <p className="text-base sm:text-lg text-center text-black font-[350] mb-6 md:mb-8 max-w-[90%] sm:max-w-[85%] md:max-w-[80%] px-4">
           World’s most intelligent decision agent — redefining the
-          decision-making process for — investments, portfolio management, market &
-          competition, and customer risk.
+          decision-making process for — investments, portfolio management,
+          market & competition, and customer risk.
         </p>
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 px-4">
           <PrimaryButton
@@ -1053,27 +1053,27 @@ const TabNavigation: React.FC<TabNavigationProps> = ({
 
 // Use Cases Section Component
 const UseCasesSection: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("ecommerce");
+  const [activeTab, setActiveTab] = useState("private equity");
 
   const tabs: TabItem[] = [
-    { id: "ecommerce", label: "Retail" },
-    { id: "travel", label: "Travel" },
-    { id: "education", label: "Education" },
-    { id: "finance", label: "Finance" },
+    { id: "private equity", label: "Private Equity" },
+    // { id: "credit risk", label: "Credit Risk" },
+    { id: "wealth management", label: "Wealth Management" },
+    { id: "asset management", label: "Asset Management" },
   ];
 
   const renderActivePanel = () => {
     switch (activeTab) {
-      case "ecommerce":
-        return <EcommerceExecutiveDemoWithStyles />;
-      case "travel":
-        return <TravelAnalysisDemo />;
-      case "education":
-        return <EducationAnalysisDemoWithStyles />;
-      case "finance":
-        return <FinancialAnalyticsDemoWithStyles />;
+      case "private equity":
+        return <PrivateEquityDemo />;
+      case "credit risk":
+        return <CreditRiskDemo />;
+      case "asset management":
+        return <AssetManagementDemo />;
+      case "wealth management":
+        return <WealthManagementDemo />;
       default:
-        return <EcommerceExecutiveDemoWithStyles />;
+        return <PrivateEquityDemo />;
     }
   };
 
