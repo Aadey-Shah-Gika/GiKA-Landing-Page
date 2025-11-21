@@ -1,7 +1,3 @@
----
-description: Website to display information about the company.
----
-
 # Landing Page
 
 ## Website for Company Portfolio
